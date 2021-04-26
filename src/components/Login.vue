@@ -28,6 +28,7 @@
 
 <script>
 export default {
+
   data(){
     return{
       // 登陆表单数据绑定对象
@@ -54,22 +55,71 @@ export default {
   },
   
   methods:{
+
     //重置按钮，重置登陆表单
     resetLoginForm(){
       //console.log(this)
       this.$refs.loginFormRef.resetFields();
     },
+
     login(){
-      //请求成功？
+      this.$refs.loginFormRef.validate(valid =>{
+        var that=this;
+        if(valid){
+          this.axios({
+            method: 'post',
+            url: 'http://localhost:8081/Server/login',
+            //headers:{
+            //  'Content-type': 'application/json;charset=UTF-8'
+            //},
+            data:{
+              name: this.loginForm.username,
+              password: this.loginForm.password
+            }
+          }).then(function(res){
+            console.log(res.data)
+            //登陆成功         
+            if(res.data=="success"){
+              that.$message.success('登陆成功！')
+              that.$router.push("/home");
+            }else{
+              that.$message.error('登录名或密码错误')
+            }
+            
+          })
+        }
+        else{
+          this.$message.error('登录名或密码不符合表单规则')
+        }
+      });
+      /*
       this.$refs.loginFormRef.validate(async valid =>{
-        if(!valid) return;
+         if(!valid) return;
         const {data:res} = await this.$http.post("login", this.loginForm);
         if(res.meta.status != 200) return this.$message.error('登陆失败！')
         this.$message.success('登陆成功！')
         //登陆成功后将token保存到客户端sessionStorage中
         window.sessionStorage.setItem("token", res.data.token);
-        this.$router.push("/home");
-      });
+        */
+        /*
+       this.axios({
+        method: 'post',
+        url: 'http://localhost:8081/Server/login',
+        data:{
+          name:this.username,
+          password:this.password
+        }
+      }).then(function(res){
+        //账号密码正确，跳转主页面
+        if(res.data=="success"){
+          this.$message.success('登陆成功！')
+          this.$router.push("/home");
+        }else{
+          return this.$message.error('用户名或密码错误');
+        }
+        */
+      
+      
     }
   }
 };
