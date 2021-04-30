@@ -39,6 +39,7 @@
                 <span>rfid与车号配置表</span>
               </template>
             </el-menu-item>
+
             <el-menu-item index="/record">
               <template slot="title">
                 <!-- 图标 -->
@@ -47,6 +48,16 @@
                 <span>工作记录查询</span>
               </template>
             </el-menu-item>
+
+            <el-menu-item index="/statistics">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-data"></i>
+                <!-- 文本 -->
+                <span>车辆运输统计</span>
+              </template>
+            </el-menu-item>
+
           </el-submenu>
         </el-menu>
       </el-aside>

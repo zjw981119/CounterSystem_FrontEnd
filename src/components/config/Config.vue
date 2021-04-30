@@ -163,7 +163,7 @@ export default {
     async getConfig() {
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8081/Server/show/initConfig',
+        'http://localhost:8083/Server/show/initConfig',
         {
           params: this.queryInfo,
         }
@@ -187,7 +187,7 @@ export default {
         if (!valid) return
         //可以发起添加配置信息的网络请求
         const { data: res } = await this.$http.post(
-          'http://localhost:8081/Server/show/add',
+          'http://localhost:8083/Server/show/add',
           this.addForm
         )
         if (res.result.code !== '20000') {
@@ -218,7 +218,7 @@ export default {
         if (!valid) return
         //发起修改配置信息的数据请求
         const { data: res } = await this.$http.post(
-          'http://localhost:8081/Server/show/update',
+          'http://localhost:8083/Server/show/update',
           this.editForm
         )
         if (res.result.code !== '20000') {
@@ -253,7 +253,7 @@ export default {
         return this.$message.info('已取消删除')
       }
       const { data: res } = await this.$http.get(
-        'http://localhost:8081/Server/show/delete?rfid=' + rfid
+        'http://localhost:8083/Server/show/delete?rfid=' + rfid
       )
       if (res.result.code !== '20000') {
         return that.$message.error('删除用户失败')
@@ -266,5 +266,9 @@ export default {
 }
 </script>
 
+
 <style lang="less" scoped>
+.el-card{
+  box-shadow: 0 2px 2px rgba(0,0,0, 0.15) !important ;
+}
 </style>
