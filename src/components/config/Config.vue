@@ -21,7 +21,8 @@
       </el-row>
 
       <!-- 配置列表区域 -->
-      <el-table :data="configlist" border stripe>
+      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}"
+    :cell-style="{'text-align':'center'}">
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="rfid号" prop="rfid"></el-table-column>
         <el-table-column label="车号" prop="carNum"></el-table-column>

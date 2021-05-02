@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="text-align: center;">
     <!-- 面包屑导航区域 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
@@ -12,7 +12,8 @@
       <!-- 时间选择、搜索区域 -->
       <el-row :gutter="20">
         <el-col :span="16">
-          <el-date-picker type="daterange" v-model="timevalue" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
+          <el-date-picker type="daterange" v-model="timevalue" range-separator="至" 
+          start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd">
           </el-date-picker>
         </el-col>
         <el-col :span="4">
@@ -21,10 +22,11 @@
       </el-row>
 
       <!-- 统计数据区域 -->
-      <el-table :data="countslist" border stripe size="medium" :summary-method="getSummaries" show-summary>
-        <el-table-column type="index" label="#" width="50"></el-table-column>
-        <el-table-column label="车号" prop="carNum" ></el-table-column>
-        <el-table-column label="运输趟数" prop="counts" ></el-table-column>
+      <el-table :data="countslist" border stripe size="medium" :summary-method="getSummaries" show-summary 
+      :header-cell-style="{'text-align':'center'}" > 
+        <el-table-column type="index" label="#" width="50" align="center"></el-table-column>
+        <el-table-column label="车号" prop="carNum" align="center"></el-table-column>
+        <el-table-column label="运输趟数" prop="counts" align="center"></el-table-column>
       </el-table>
     </el-card>
   </div>
@@ -51,7 +53,7 @@ export default {
     async getcountData() {
       var that = this
       console.log(this.timevalue)
-      if (this.timevalue == 0) {
+      if (this.timevalue == 0 ||this.timevalue==null) {
         return this.$message.error('查询日期不得为空')
       }
       this.editForm.beginTime = this.timevalue[0]

@@ -4,7 +4,8 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 import Config from '../components/config/Config.vue'
-import Statistics from '../components/statistics/Statistics.vue'
+import Statistics from '../components/record/Statistics.vue'
+import Record from '../components/record/Record.vue'
 
 // 安装路由模块
 Vue.use(Router)
@@ -20,7 +21,8 @@ const router = new Router({
       children: [
         { path: '/welcome', component: Welcome },
         { path: '/config', component: Config },
-        { path: '/statistics', component: Statistics }
+        { path: '/statistics', component: Statistics },
+        { path: '/record', component: Record }
       ]
     }
   ]
