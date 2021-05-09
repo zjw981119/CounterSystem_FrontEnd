@@ -21,8 +21,7 @@
       </el-row>
 
       <!-- 配置列表区域 -->
-      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}"
-    :cell-style="{'text-align':'center'}">
+      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}">
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="rfid号" prop="rfid"></el-table-column>
         <el-table-column label="车号" prop="carNum"></el-table-column>
@@ -40,6 +39,13 @@
           </template>
         </el-table-column>
       </el-table>
+
+      <!-- 分页区域 -->
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
+      :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 20, 40]" 
+      :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" 
+      :total="total">
+      </el-pagination>
     </el-card>
 
     <!-- 添加配置信息的对话框 -->
@@ -102,6 +108,7 @@ export default {
       cb(new Error('rfid卡号为8位数字'))
     }
 
+    /*
     //验证车号规则
     var checkCarnum = (rule, value, cb) => {
       //验证rfid的正则表达式,必须用//包裹正则表达式
@@ -113,13 +120,18 @@ export default {
 
       cb(new Error('车号为两位大写字母+三位数字组合'))
     }
-
+*/
     return {
       //获取rfid配置表的参数对象
       queryInfo: {
         query: '',
-        address: 'GNXM',
+        //当前页数
+        pagenum: 1,
+        //每页数据条数
+        pagesize: 10,
+        address: 'PANH',
       },
+      total:0,
       configlist: [],
       // 控制添加配置信息对话框的显示和隐藏
       addDialogVisible: false,
@@ -138,7 +150,7 @@ export default {
         ],
         carnum: [
           { required: true, message: '请输入车号', trigger: 'blur' },
-          { validator: checkCarnum, trigger: 'blur' },
+          //{ validator: checkCarnum, trigger: 'blur' },
         ],
         address: [
           { required: true, message: '请输入矿车地址', trigger: 'blur' },
@@ -164,7 +176,7 @@ export default {
     async getConfig() {
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/show/initConfig',
+        'http://localhost:8083/Server/Rfidshow/initConfig',
         {
           params: this.queryInfo,
         }
@@ -173,6 +185,7 @@ export default {
         return that.$message.error('获取配置表失败')
       }
       this.configlist = res.data
+      this.total=res.total
       console.log(res)
     },
 
@@ -188,7 +201,7 @@ export default {
         if (!valid) return
         //可以发起添加配置信息的网络请求
         const { data: res } = await this.$http.post(
-          'http://localhost:8083/Server/show/add',
+          'http://localhost:8083/Server/Rfidshow/add',
           this.addForm
         )
         if (res.result.code !== '20000') {
@@ -219,7 +232,7 @@ export default {
         if (!valid) return
         //发起修改配置信息的数据请求
         const { data: res } = await this.$http.post(
-          'http://localhost:8083/Server/show/update',
+          'http://localhost:8083/Server/Rfidshow/update',
           this.editForm
         )
         if (res.result.code !== '20000') {
@@ -254,7 +267,7 @@ export default {
         return this.$message.info('已取消删除')
       }
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/show/delete?rfid=' + rfid
+        'http://localhost:8083/Server/Rfidshow/delete?rfid=' + rfid
       )
       if (res.result.code !== '20000') {
         return that.$message.error('删除用户失败')
@@ -263,13 +276,27 @@ export default {
       this.$message.success('删除配置信息成功')
       this.getConfig()
     },
+
+    //监听pagesize改变的事件
+    handleSizeChange(newSize) {
+      //console.log(newSize)
+      this.queryInfo.pagesize=newSize
+      this.getConfig()
+    },
+
+    //监听页码改变的事件
+    handleCurrentChange(newPage) {
+      //console.log(newPage)
+      this.queryInfo.pagenum=newPage
+      this.getConfig()
+    },
   },
 }
 </script>
 
 
 <style lang="less" scoped>
-.el-card{
-  box-shadow: 0 2px 2px rgba(0,0,0, 0.15) !important ;
+.el-card {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15) !important ;
 }
 </style>

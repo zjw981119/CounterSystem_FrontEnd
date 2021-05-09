@@ -3,9 +3,18 @@ import Router from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
-import Config from '../components/config/Config.vue'
+import AuxmacFuelRecord from '../components/record/AuxmacFuelRecord.vue'
+import MacRecord from '../components/record/AuxmacFuelRecord.vue'
+import DiggerProduction from '../components/record/DiggerProduction.vue'
+import CarProduction from '../components/record/CarProduction.vue'
+import CarRecord from '../components/record/CarRecord.vue'
 import Statistics from '../components/record/Statistics.vue'
-import Record from '../components/record/Record.vue'
+import DiggerConfig from '../components/config/DiggerConfig.vue'
+import CarConfig from '../components/config/CarConfig.vue'
+import AuxMacConfig from '../components/config/AuxiliaryMacConfig.vue'
+import RfidConfig from '../components/config/RfidCarConfig.vue'
+
+
 
 // 安装路由模块
 Vue.use(Router)
@@ -20,9 +29,16 @@ const router = new Router({
       redirect: '/welcome',
       children: [
         { path: '/welcome', component: Welcome },
-        { path: '/config', component: Config },
+        { path: '/auxfuelrecord', component: AuxmacFuelRecord },
+        { path: '/macrecord', component: MacRecord },
+        { path: '/diggerproduction', component: DiggerProduction },
+        { path: '/carproduction', component: CarProduction },
+        { path: '/carrecord', component: CarRecord },
         { path: '/statistics', component: Statistics },
-        { path: '/record', component: Record }
+        { path: '/diggerconfig', component: DiggerConfig },
+        { path: '/carconfig', component: CarConfig },
+        { path: '/auxmacconfig', component: AuxMacConfig },
+        { path: '/rfidconfig', component: RfidConfig },
       ]
     }
   ]

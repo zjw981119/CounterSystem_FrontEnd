@@ -13,13 +13,7 @@
       <!-- 侧边栏 -->
       <el-aside width="200px">
         <!-- 侧边栏菜单区域 -->
-        <el-menu
-          background-color="#333744"
-          text-color="#fff"
-          active-text-color="#409BFF"
-          router
-          :default-active="$route.path"
-        >
+        <el-menu background-color="#333744" text-color="#fff" active-text-color="#409BFF" router :default-active="$route.path">
           <!-- 一级菜单1 -->
           <el-submenu index="1">
             <!-- 一级菜单的模板区域 -->
@@ -27,34 +21,101 @@
               <!-- 图标 -->
               <i class="el-icon-folder-add"></i>
               <!-- 文本 -->
-              <span>展示</span>
+              <span>计数展示</span>
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item index="/config">
-              <template slot="title">
-                <!-- 图标 -->
-                <i class="el-icon-s-order"></i>
-                <!-- 文本 -->
-                <span>rfid与车号配置表</span>
-              </template>
-            </el-menu-item>
-
-            <el-menu-item index="/record">
+            <el-menu-item index="/auxfuelrecord">
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-data-analysis"></i>
                 <!-- 文本 -->
-                <span>工作记录查询</span>
+                <span>辅助车辆加油情况表</span>
               </template>
             </el-menu-item>
 
-            <el-menu-item index="/statistics">
+            <el-menu-item index="/macrecord">
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-s-data"></i>
+                <i class="el-icon-data-analysis"></i>
                 <!-- 文本 -->
-                <span>车辆运输统计</span>
+                <span>机械统计表</span>
+              </template>
+            </el-menu-item>
+
+            <el-menu-item index="/diggerproduction">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>挖机生产情况表</span>
+              </template>
+            </el-menu-item>
+
+            <el-menu-item index="/carproduction">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>车辆生产情况表</span>
+              </template>
+            </el-menu-item>
+
+            <el-menu-item index="/carrecord">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>车辆统计表</span>
+              </template>
+            </el-menu-item>
+
+          </el-submenu>
+
+          <!-- 一级菜单2 -->
+          <el-submenu index="2">
+            <!-- 一级菜单的模板区域 -->
+            <template slot="title">
+              <!-- 图标 -->
+              <i class="el-icon-folder-add"></i>
+              <!-- 文本 -->
+              <span>计数配置表</span>
+            </template>
+
+            <!-- 二级菜单 -->
+            <el-menu-item index="/diggerconfig">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>挖机配置表</span>
+              </template>
+            </el-menu-item>
+
+            <el-menu-item index="/carconfig">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>车辆配置表</span>
+              </template>
+            </el-menu-item>
+
+            <el-menu-item index="/auxmacconfig">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>辅助机械配置表</span>
+              </template>
+            </el-menu-item>
+
+            <el-menu-item index="/rfidconfig">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>rfid与车号配置表</span>
               </template>
             </el-menu-item>
 
@@ -70,7 +131,7 @@
   </el-container>
 </template>
 
-<script> 
+<script>
 export default {
   /*
   data(){
@@ -84,7 +145,7 @@ export default {
     this.getMenuList()
   },
   */
- 
+
   methods: {
     logout() {
       //window.sessionStorage.clear()
@@ -100,7 +161,6 @@ export default {
       console.log(res)
     }
     */
-
   },
 }
 </script>

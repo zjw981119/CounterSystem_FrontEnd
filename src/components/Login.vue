@@ -34,7 +34,7 @@ export default {
       // 登陆表单数据绑定对象
       loginForm:{
         username: 'admin',
-        password: '123456'
+        password: 'gnkj2019'
       },
 
       //表单验证规则对象
@@ -63,34 +63,25 @@ export default {
     },
 
     login(){
-      this.$refs.loginFormRef.validate(valid =>{
+      this.$refs.loginFormRef.validate(async valid =>{
         var that=this;
-        if(valid){
-          this.axios({
-            method: 'post',
-            url: 'http://localhost:8083/Server/login',
-            //headers:{
-            //  'Content-type': 'application/json;charset=UTF-8'
-            //},
-            data:{
-              name: this.loginForm.username,
-              password: this.loginForm.password
-            }
-          }).then(function(res){
-            console.log(res.data)
-            //登陆成功         
-            if(res.data=="success"){
-              that.$message.success('登陆成功！')
-              that.$router.push("/home");
-            }else{
-              that.$message.error('登录名或密码错误')
-            }
-            
-          })
+        if (!valid) {
+          this.$message.error('登录名或密码不符合表单规则')
+          return
+        }
+        //可以发起添加配置信息的网络请求
+        const { data: res } = await this.$http.post(
+          'http://localhost:8083/Server/login',
+          this.loginForm
+        )
+        if (res.result.code !== '20000') {
+          return that.$message.error('用户名或密码错误')
         }
         else{
-          this.$message.error('登录名或密码不符合表单规则')
+          this.$message.success('登陆成功')
+          this.$router.push('/home')
         }
+
       });
       /*
       this.$refs.loginFormRef.validate(async valid =>{
