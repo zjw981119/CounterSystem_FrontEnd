@@ -14,3 +14,8 @@ html,body,#app {
 .el-table{
   margin-top: 15px;
 }
+
+/* 分页样式 */
+.el-pagination{
+  margin-top: 15px;
+}

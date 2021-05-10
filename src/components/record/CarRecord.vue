@@ -26,28 +26,69 @@
           <el-button icon="el-icon-search" type="primary" @click="getRecordData">查询</el-button>
         </el-col>
       </el-row>
-    </el-card>
 
-    <!-- 展示工作记录区域 -->
-    <el-table ref="multipleTable" :data="recordlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="460">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column label="记录id" prop="id"></el-table-column>
-      <el-table-column label="运输车号" prop="carNum"></el-table-column>
-      <el-table-column label="图片">
-        <template slot-scope="scope">
-          <el-image style="width: 50px; height: 50px" :src="scope.row.picture" :preview-src-list="[scope.row.picture]">
-          </el-image>
-        </template>
-      </el-table-column>
-      <el-table-column label="车载情况" prop="carLoad"></el-table-column>
-      <el-table-column label="运输次序" prop="subCounts"></el-table-column>
-      <el-table-column label="记录的设备号" prop="address"></el-table-column>
-      <el-table-column label="记录时间" prop="time"></el-table-column>
-    </el-table>
+      <!-- 展示工作记录区域 -->
+      <el-table ref="multipleTable" :data="recordlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="460">
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column type="index" label="#"></el-table-column>
+        <el-table-column label="计数宝编号" prop="address"></el-table-column>
+        <el-table-column label="挖机编号" prop="grabCarNum"></el-table-column>
+        <el-table-column label="车辆编号" prop="carNum"></el-table-column>
+        <el-table-column label="刷卡时间" prop="time"></el-table-column>
+        <el-table-column label="车数" prop="degree"></el-table-column>
+        <!-- 物料选择器 -->
+        <el-table-column label="物料" prop="material">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.material" @change="changeMultiMaterial(scope.row.material)" clearable placeholder="">
+              <el-option v-for="item in MaterialOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="运距" prop="distance">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.distance" @change="changeMultiDistance(scope.row.distance)" clearable></el-input>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="单价" prop="price">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.price" @change="changeMultiPrice(scope.row.price)" clearable></el-input>
+          </template>
+        </el-table-column>
+        <!-- 车载选择器 -->
+        <el-table-column label="车辆状态" prop="isFull">
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.isFull" @change="changeMultiCarLoad(scope.row.isFull)" clearable placeholder="">
+              <el-option v-for="item in CarLoadOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="特殊情况加车数" prop="remark">
+          <template slot-scope="scope">
+            <el-input v-model="scope.row.remark" @change="changeMultiRemark(scope.row.remark)" clearable></el-input>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="图片">
+          <template slot-scope="scope">
+            <el-image style="width: 50px; height: 50px" :src="scope.row.picture" :preview-src-list="[scope.row.picture]">
+            </el-image>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- 分页区域 -->
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 20, 40]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </el-card>
 
     <!-- 修改满载判断数据 -->
     <div style="margin-top: 20px">
-      <el-button type="primary" icon="el-icon-edit" @click="setNoLoad();changeCarload();">空载</el-button>
+      <el-button type="primary" icon="el-icon-edit" @click="setNoLoad();changeCarload();">空111载</el-button>
       <el-button type="primary" icon="el-icon-edit" @click="setHalfLoad();changeCarload()">半载</el-button>
       <el-button type="primary" icon="el-icon-edit" @click="setFullLoad();changeCarload()">满载</el-button>
     </div>
@@ -64,8 +105,41 @@ export default {
         queryCar: '',
         beginTime: '',
         endTime: '',
+        //当前页数
+        pagenum: 1,
+        //每页数据条数
+        pagesize: 10,
       },
+      total: 0,
       carload: '',
+
+      //物料选择器的数据
+      MaterialOptions: [
+        {
+          value: '1',
+          label: '硬土',
+        },
+        {
+          value: '2',
+          label: '软土',
+        },
+      ],
+
+      //车载选择器的数据
+      CarLoadOptions: [
+        {
+          value: '-1',
+          label: '满车',
+        },
+        {
+          value: '0',
+          label: '空车',
+        },
+        {
+          value: '1',
+          label: '半车',
+        },
+      ],
 
       recordlist: [],
 
@@ -81,8 +155,8 @@ export default {
     setHalfLoad() {
       this.carload = '半载'
     },
-    setFullLoad(){
-      this.carload='满载'
+    setFullLoad() {
+      this.carload = '满载'
     },
     //获取矿车工作记录数据
     async getRecordData() {
@@ -104,9 +178,113 @@ export default {
         return that.$message.error('获取工作记录失败')
       }
       this.recordlist = res.data
+      this.total = res.total
       console.log(res)
     },
 
+    //监听pagesize改变的事件
+    handleSizeChange(newSize) {
+      //console.log(newSize)
+      this.queryInfo.pagesize = newSize
+      this.getRecordData()
+    },
+
+    //监听页码改变的事件
+    handleCurrentChange(newPage) {
+      //console.log(newPage)
+      this.queryInfo.pagenum = newPage
+      this.getRecordData()
+    },
+
+    //监听单价输入框改变的事件
+    changeMultiPrice(newPrice) {
+      //console.log(newPrice)
+      var length = this.$refs.multipleTable.selection.length
+      //若没有使用多选框，则直接返回
+      if (length == 0) return
+      //使用多选框，则修改所有选中行的价格
+      else {
+        for (
+          let index = 0;
+          index < this.$refs.multipleTable.selection.length;
+          index++
+        ) {
+          this.$refs.multipleTable.selection[index].price = newPrice
+        }
+      }
+    },
+
+    //监听运距输入框改变的事件
+    changeMultiDistance(newDistance) {
+      //console.log(newPrice)
+      var length = this.$refs.multipleTable.selection.length
+      //若没有使用多选框，则直接返回
+      if (length == 0) return
+      //使用多选框，则修改所有选中行的价格
+      else {
+        for (
+          let index = 0;
+          index < this.$refs.multipleTable.selection.length;
+          index++
+        ) {
+          this.$refs.multipleTable.selection[index].distance = newDistance
+        }
+      }
+    },
+
+    //监听特殊情况加车数输入框改变的事件
+    changeMultiRemark(newRemark) {
+      //console.log(newPrice)
+      var length = this.$refs.multipleTable.selection.length
+      //若没有使用多选框，则直接返回
+      if (length == 0) return
+      //使用多选框，则修改所有选中行的价格
+      else {
+        for (
+          let index = 0;
+          index < this.$refs.multipleTable.selection.length;
+          index++
+        ) {
+          this.$refs.multipleTable.selection[index].remark = newRemark
+        }
+      }
+    },
+
+    //监听物料选择器改变的事件
+    changeMultiMaterial(newMaterial) {
+      console.log(newMaterial)
+      var length = this.$refs.multipleTable.selection.length
+      //若没有使用多选框，则直接返回
+      if (length == 0) return
+      //使用多选框，则修改所有选中行的价格
+      else {
+        for (
+          let index = 0;
+          index < this.$refs.multipleTable.selection.length;
+          index++
+        ) {
+          this.$refs.multipleTable.selection[index].material = newMaterial
+        }
+      }
+    },
+
+    //监听车载选择器改变的事件
+    changeMultiCarLoad(newCarLoad) {
+      console.log(newCarLoad)
+      var length = this.$refs.multipleTable.selection.length
+      //若没有使用多选框，则直接返回
+      if (length == 0) return
+      //使用多选框，则修改所有选中行的价格
+      else {
+        for (
+          let index = 0;
+          index < this.$refs.multipleTable.selection.length;
+          index++
+        ) {
+          this.$refs.multipleTable.selection[index].isFull = newCarLoad
+        }
+      }
+    },
     //车载修改按钮
     async changeCarload() {
       var that = this
