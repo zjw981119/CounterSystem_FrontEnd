@@ -52,12 +52,12 @@
               </template>
             </el-menu-item>
 
-            <el-menu-item index="/carproduction">
+            <el-menu-item index="/carfuel">
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-data-analysis"></i>
                 <!-- 文本 -->
-                <span>车辆生产情况表</span>
+                <span>车辆油量表</span>
               </template>
             </el-menu-item>
 

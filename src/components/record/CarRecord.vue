@@ -25,6 +25,10 @@
         <el-col :span="4">
           <el-button icon="el-icon-search" type="primary" @click="getRecordData">查询</el-button>
         </el-col>
+        <!-- 上传按钮 -->
+        <el-col :span="2">
+          <el-button type="primary" @click="UploadData">上传<i class="el-icon-upload el-icon--right"></i></el-button>
+        </el-col>
       </el-row>
 
       <!-- 展示工作记录区域 -->
@@ -60,16 +64,16 @@
         <!-- 车载选择器 -->
         <el-table-column label="车辆状态" prop="isFull">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.isFull" @change="changeMultiCarLoad(scope.row.isFull)" clearable placeholder="">
+            <el-select v-model="scope.row.isFull" @change="changeMultiCarLoad(scope.row.isFull)" placeholder="">
               <el-option v-for="item in CarLoadOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </template>
         </el-table-column>
 
-        <el-table-column label="特殊情况加车数" prop="remark">
+        <el-table-column label="特殊情况加车数" prop="additionalCount">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.remark" @change="changeMultiRemark(scope.row.remark)" clearable></el-input>
+            <el-input v-model="scope.row.remark" clearable></el-input>
           </template>
         </el-table-column>
 
@@ -116,12 +120,16 @@ export default {
       //物料选择器的数据
       MaterialOptions: [
         {
-          value: '1',
+          value: '硬土',
           label: '硬土',
         },
         {
-          value: '2',
+          value: '软土',
           label: '软土',
+        },
+        {
+          value: '炮料',
+          label: '炮料',
         },
       ],
 
@@ -132,16 +140,18 @@ export default {
           label: '满车',
         },
         {
-          value: '0',
+          value: '空车',
           label: '空车',
         },
         {
-          value: '1',
+          value: '半车',
           label: '半车',
         },
       ],
 
       recordlist: [],
+
+      updatelist: [],
 
       selectlist: [],
     }
@@ -285,6 +295,57 @@ export default {
         }
       }
     },
+
+    //监听上传数据按钮
+    async UploadData() {
+      var selectionLength = this.$refs.multipleTable.selection.length
+      var recordLength = this.recordlist.length
+      //弹框询问是否想要提交
+      const confirmResult = await this.$confirm(
+        '此操作将提交修改信息, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).catch((err) => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消提交')
+      }
+
+      //没有查询数据
+      if (recordLength == 0) {
+        return this.$message.error('没有修改的数据')
+      }
+      //没有使用批量选择,则提交当前页面所有数据
+      else if (selectionLength == 0) {
+        console.log(recordLength)
+        for (let index = 0; index < recordLength; index++) {
+          this.updatelist.push({
+            id: this.recordlist[index].id,
+            material: this.recordlist[index].material,
+            distance:this.recordlist[index].distance,
+            price:this.recordlist[index].distance,
+            additionalCount:this.recordlist[index].additionalCount
+          })
+        }  
+      }
+      //使用批量选择，则提交选中的所有数据 
+      else {
+        console.log(selectionLength)
+        for (let index = 0; index < selectionLength; index++) {
+          this.updatelist.push({
+            id: this.$refs.multipleTable.selection[index].id,
+            material: this.$refs.multipleTable.selection[index].material,
+            distance:this.$refs.multipleTable.selection[index].distance,
+            price:this.$refs.multipleTable.selection[index].distance,
+            additionalCount:this.$refs.multipleTable.selection[index].additionalCount
+          })
+        }  
+      }
+    },
+
     //车载修改按钮
     async changeCarload() {
       var that = this
