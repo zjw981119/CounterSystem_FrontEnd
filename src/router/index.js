@@ -4,9 +4,9 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 import AuxmacFuelRecord from '../components/record/AuxmacFuelRecord.vue'
-import MacRecord from '../components/record/AuxmacFuelRecord.vue'
+import MacRecord from '../components/record/MacRecord.vue'
 import DiggerProduction from '../components/record/DiggerProduction.vue'
-import CarProduction from '../components/record/CarProduction.vue'
+import CarFuel from '../components/record/CarFuel.vue'
 import CarRecord from '../components/record/CarRecord.vue'
 import Statistics from '../components/record/Statistics.vue'
 import DiggerConfig from '../components/config/DiggerConfig.vue'
@@ -32,7 +32,7 @@ const router = new Router({
         { path: '/auxfuelrecord', component: AuxmacFuelRecord },
         { path: '/macrecord', component: MacRecord },
         { path: '/diggerproduction', component: DiggerProduction },
-        { path: '/carproduction', component: CarProduction },
+        { path: '/carfuel', component: CarFuel },
         { path: '/carrecord', component: CarRecord },
         { path: '/statistics', component: Statistics },
         { path: '/diggerconfig', component: DiggerConfig },
