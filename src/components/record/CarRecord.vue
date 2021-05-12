@@ -73,7 +73,7 @@
 
         <el-table-column label="特殊情况加车数" prop="additionalCount">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.remark" clearable></el-input>
+            <el-input v-model="scope.row.additionalCount" clearable></el-input>
           </template>
         </el-table-column>
 
@@ -298,6 +298,10 @@ export default {
 
     //监听上传数据按钮
     async UploadData() {
+      var that = this
+      //清空列表
+      this.updatelist=new Array()
+
       var selectionLength = this.$refs.multipleTable.selection.length
       var recordLength = this.recordlist.length
       //弹框询问是否想要提交
@@ -325,25 +329,38 @@ export default {
           this.updatelist.push({
             id: this.recordlist[index].id,
             material: this.recordlist[index].material,
-            distance:this.recordlist[index].distance,
-            price:this.recordlist[index].distance,
-            additionalCount:this.recordlist[index].additionalCount
+            distance: this.recordlist[index].distance,
+            price: this.recordlist[index].price,
+            isFull: this.recordlist[index].isFull,
+            additionalCount: this.recordlist[index].additionalCount,
           })
-        }  
+        }
       }
-      //使用批量选择，则提交选中的所有数据 
+      //使用批量选择，则提交选中的所有数据
       else {
         console.log(selectionLength)
         for (let index = 0; index < selectionLength; index++) {
           this.updatelist.push({
             id: this.$refs.multipleTable.selection[index].id,
             material: this.$refs.multipleTable.selection[index].material,
-            distance:this.$refs.multipleTable.selection[index].distance,
-            price:this.$refs.multipleTable.selection[index].distance,
-            additionalCount:this.$refs.multipleTable.selection[index].additionalCount
+            distance: this.$refs.multipleTable.selection[index].distance,
+            price: this.$refs.multipleTable.selection[index].price,
+            isFull:this.$refs.multipleTable.selection[index].isFull,
+            additionalCount: this.$refs.multipleTable.selection[index]
+              .additionalCount,
           })
-        }  
+        }
       }
+
+      //发送请求
+      const { data: res } = await this.$http.post(
+        'http://localhost:8083/Server/counter/setRecord',
+        this.updatelist
+      )
+      if (res.result.code !== '20000') {
+        return that.$message.error('修改车载信息失败')
+      }
+      that.$message.success('修改车载信息成功')
     },
 
     //车载修改按钮
