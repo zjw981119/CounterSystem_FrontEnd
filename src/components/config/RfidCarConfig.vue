@@ -21,8 +21,7 @@
       </el-row>
 
       <!-- 配置列表区域 -->
-      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" 
-      :cell-style="{'text-align':'center'}" height="480">
+      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="520">
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="rfid号" prop="rfid" sortable></el-table-column>
         <el-table-column label="车号" prop="carNum" sortable></el-table-column>
@@ -42,11 +41,8 @@
       </el-table>
 
       <!-- 分页区域 -->
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" 
-      :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 20, 40]" 
-      :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" 
-      :total="total">
-      </el-pagination>
+      <!-- <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 20, 40]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination> -->
     </el-card>
 
     <!-- 添加配置信息的对话框 -->
@@ -126,13 +122,13 @@ export default {
       //获取rfid配置表的参数对象
       queryInfo: {
         query: '',
-        //当前页数
-        pagenum: 1,
-        //每页数据条数
-        pagesize: 10,
         address: 'PANH',
+        //当前页数
+        //pagenum: 1,
+        //每页数据条数
+        //pagesize: 10,
       },
-      total:0,
+      total: 0,
       configlist: [],
       // 控制添加配置信息对话框的显示和隐藏
       addDialogVisible: false,
@@ -186,7 +182,7 @@ export default {
         return that.$message.error('获取配置表失败')
       }
       this.configlist = res.data
-      this.total=res.total
+      this.total = res.total
       console.log(res)
     },
 
@@ -278,6 +274,7 @@ export default {
       this.getConfig()
     },
 
+    /*
     //监听pagesize改变的事件
     handleSizeChange(newSize) {
       //console.log(newSize)
@@ -290,7 +287,8 @@ export default {
       //console.log(newPage)
       this.queryInfo.pagenum=newPage
       this.getConfig()
-    },
+    }, 
+    */
   },
 }
 </script>

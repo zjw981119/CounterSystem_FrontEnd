@@ -16,10 +16,26 @@
           <el-date-picker v-model="timevalue" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['06:00:00', '06:00:00']" value-format="yyyy-MM-dd HH:mm:ss">
           </el-date-picker>
         </el-col>
-        <!-- 查询车号输入框 -->
+        <!-- 车号选择器 -->
         <el-col :span="4">
-          <el-input placeholder="请输入想要查询的车号" v-model="queryInfo.queryCar" clearable>
-          </el-input>
+          <el-select v-model="queryInfo.queryCar" placeholder="选择车号">
+            <el-option v-for="item in Carnumoptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <!-- 刷卡器选择器 -->
+        <el-col :span="4">
+          <el-select v-model="queryInfo.queryAddress" placeholder="选择刷卡器编号">
+            <el-option v-for="item in Addressoptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <!-- 挖机选择器 -->
+        <el-col :span="4">
+          <el-select v-model="queryInfo.queryDigger" placeholder="选择挖机号">
+            <el-option v-for="item in Diggeroptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
         </el-col>
         <!-- 查询按钮 -->
         <el-col :span="2">
@@ -99,8 +115,11 @@ export default {
     return {
       timevalue: '',
 
+      //查询请求对象
       queryInfo: {
         queryCar: '',
+        queryAddress: '',
+        queryDigger: '',
         beginTime: '',
         endTime: '',
         //当前页数
@@ -110,7 +129,22 @@ export default {
       },
       total: 0,
       carload: '',
-
+      //车号选择器
+      Carnumoptions: [
+        {
+          value: '503#',
+          label: '503#',
+        },
+      ],
+      //刷卡器选择器
+      Addressoptions: [
+        {
+          value: 'PANH@001#',
+          label: 'PANH@001#',
+        },
+      ],
+      //挖机选择器
+      Diggeroptions: [{ value: 'grab1', label: 'grab1' }],
       //物料选择器的数据
       MaterialOptions: [
         {
@@ -152,7 +186,6 @@ export default {
   },
 
   methods: {
-
     //获取矿车工作记录数据
     async getRecordData() {
       var that = this
@@ -285,7 +318,7 @@ export default {
     async UploadData() {
       var that = this
       //清空列表
-      this.updatelist=new Array()
+      this.updatelist = new Array()
 
       var selectionLength = this.$refs.multipleTable.selection.length
       var recordLength = this.recordlist.length
@@ -330,7 +363,7 @@ export default {
             material: this.$refs.multipleTable.selection[index].material,
             distance: this.$refs.multipleTable.selection[index].distance,
             price: this.$refs.multipleTable.selection[index].price,
-            isFull:this.$refs.multipleTable.selection[index].isFull,
+            isFull: this.$refs.multipleTable.selection[index].isFull,
             additionalCount: this.$refs.multipleTable.selection[index]
               .additionalCount,
           })

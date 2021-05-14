@@ -75,10 +75,10 @@ export default {
           this.loginForm
         )
         if (res.result.code !== '20000') {
-          return that.$message.error('用户名或密码错误')
+          return this.$message.error('用户名或密码错误')
         }
         else{
-          this.$message.success('登陆成功')
+          that.$message.success('登陆成功')
           this.$router.push('/home')
         }
 

@@ -8,6 +8,8 @@
     </el-breadcrumb>
     <!-- 卡片视图区 -->
     <el-card>
+
+      
       <!-- 日期选择与查询 -->
       <el-row :gutter="10">
         <!-- 日期选择 -->
@@ -273,7 +275,11 @@ export default {
         return that.$message.error('获取配置表失败')
       }
       this.configlist = res.data
-      console.log(res)
+      //如果查询到0条数据，则添加一条空白数据
+      if(this.configlist.length==0){
+        this.addConfig()
+      }
+      console.log(res.data)
     },
 
     //监听上传数据按钮
@@ -319,6 +325,7 @@ export default {
         return that.$message.error('修改数据失败')
       }
       that.$message.success('修改数据成功')
+      this.getCarConfig()
     },
   },
 }
