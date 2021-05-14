@@ -17,7 +17,7 @@
         </el-col>
         <!-- 查询按钮 -->
         <el-col :span="2">
-          <el-button icon="el-icon-search" type="primary">查询</el-button>
+          <el-button icon="el-icon-search" type="primary" @click="getCarConfig">查询</el-button>
         </el-col>
         <!-- 上传按钮 -->
         <el-col :span="2">
@@ -122,7 +122,7 @@
             </el-tooltip>
             <!-- 删除按钮 -->
             <el-tooltip effect="dark" content="删除配置信息" placement="top" :enterable="false">
-              <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeConfigById(scope.row.id)"></el-button>
+              <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeConfigById(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -180,10 +180,26 @@ export default {
     }
   },
 
+  //自动获取当前日期的数据
+  created() {
+    const date = new Date()
+    const nowdate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    }
+    const newmonth = nowdate.month > 10 ? nowdate.month : '0' + nowdate.month
+    const newday = nowdate.day > 10 ? nowdate.day : '0' + nowdate.day
+    this.timevalue = nowdate.year + '-' + newmonth + '-' + newday
+    //console.log(this.timevalue)
+    this.getCarConfig()
+  },
+
   methods: {
     // 新增一条空的配置信息
     addConfig() {
       this.configlist.push({
+        id: '',
         carNum: '',
         carType: '',
         place: '',
@@ -203,8 +219,61 @@ export default {
     },
 
     //根据id删除对应的配置信息
-    removeConfigById(id) {
-      console.log(id)
+    async removeConfigById(config) {
+      var that = this
+      console.log(config.id)
+
+      //弹框询问用户是否确认删除
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该配置信息, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).catch((err) => err)
+
+      //如果用户确认删除，则返回值为字符串confirm
+      //如果用户取消删除，则返回值为字符串cancel
+      //console.log(confirmResult)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消删除')
+      }
+
+      //如果是新增的空数据，则直接删除前端列表中的对象
+      if (config.id == '') {
+        this.configlist.pop()
+      } 
+      else 
+      {
+        //若存在id,则像后端发送请求，对数据库进行删除操作
+        const { data: res } = await this.$http.get(
+          'http://localhost:8083/Server/Carconfig/delete?id=' + config.id
+        )
+        if (res.result.code !== '20000') {
+          return that.$message.error('删除配置信息失败')
+        }
+
+        this.$message.success('删除配置信息成功')
+        this.getCarConfig()
+      }
+    },
+
+    //获取配置信息请求
+    async getCarConfig() {
+      var that = this
+      const { data: res } = await this.$http.get(
+        'http://localhost:8083/Server/Carconfig/getConfig',
+        {
+          params: { timevalue: this.timevalue },
+        }
+      )
+      if (res.result.code !== '20000') {
+        return that.$message.error('获取配置表失败')
+      }
+      this.configlist = res.data
+      console.log(res)
     },
 
     //监听上传数据按钮
@@ -214,7 +283,7 @@ export default {
       var configLength = this.configlist.length
       //弹框询问是否想要提交
       const confirmResult = await this.$confirm(
-        '此操作将提交修改信息, 是否继续?',
+        '此操作将提交车辆配置信息, 是否继续?',
         '提示',
         {
           confirmButtonText: '确定',
