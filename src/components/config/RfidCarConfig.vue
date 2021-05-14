@@ -3,7 +3,7 @@
     <!-- 面包屑导航区域 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>展示</el-breadcrumb-item>
+      <el-breadcrumb-item>计数配置表</el-breadcrumb-item>
       <el-breadcrumb-item>rfid与车号配置表</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 卡片视图区 -->
@@ -24,8 +24,8 @@
       <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" 
       :cell-style="{'text-align':'center'}" height="480">
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="rfid号" prop="rfid"></el-table-column>
-        <el-table-column label="车号" prop="carNum"></el-table-column>
+        <el-table-column label="rfid号" prop="rfid" sortable></el-table-column>
+        <el-table-column label="车号" prop="carNum" sortable></el-table-column>
         <el-table-column label="矿区地址" prop="address"></el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
