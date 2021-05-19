@@ -7,6 +7,7 @@ import './assets/css/global.css'
 
 import axios from 'axios'
 import VueAxios from'vue-axios'
+import qs from 'qs'
 
 /*
 //配置请求的根路径
@@ -21,6 +22,7 @@ Vue.prototype.$http = axios
 */
 Vue.use(VueAxios,axios)
 Vue.config.productionTip = false
+Vue.prototype.$qs=qs
 
 new Vue({
   // 配置路由

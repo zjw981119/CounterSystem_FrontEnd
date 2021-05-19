@@ -23,17 +23,51 @@
       <el-table ref="multipleTable" :data="recordlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="460">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column type="index" label="序号"></el-table-column>
-        <el-table-column label="车号" prop="carNo"></el-table-column>
+        <el-table-column label="车号" prop="carId"></el-table-column>
         <el-table-column label="车型" prop="carType"></el-table-column>
-        <el-table-column label="内部/外部" prop="innerOrOuter"></el-table-column>
-        <el-table-column label="车主姓名" prop="carMasterName"></el-table-column>
+        <el-table-column label="内部/外部" prop="type"></el-table-column>
+        <el-table-column label="车主姓名" prop="ownerName"></el-table-column>
         <el-table-column label="油品单价" prop="oilPrice"></el-table-column>
-        <el-table-column label="工资" prop="salary"></el-table-column>
+        <el-table-column label="维修费" prop="maintenanceFee"></el-table-column>
+        <el-table-column label="饭费" prop="mealFee"></el-table-column>
+        <el-table-column label="配件费" prop="accessoryFee"></el-table-column>
+        <el-table-column label="罚款" prop="penalty"></el-table-column>
+        <el-table-column label="奖金" prop="reward"></el-table-column>
+        <el-table-column label="操作" width="150">
+          <template slot-scope="scope">
+            <!-- 修改按钮 -->
+            <el-tooltip effect="dark" content="修改配置信息" placement="top" :enterable="false">
+              <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row)"></el-button>
+            </el-tooltip>
+            <!-- 删除按钮 -->
+            <el-tooltip effect="dark" content="删除配置信息" placement="top" :enterable="false">
+              <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeConfigByRfid(scope.row.rfid)"></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
 
       </el-table>
 
 
     </el-card>
+    <!-- 修改配置信息的对话框 -->
+    <el-dialog title="修改配置信息" :visible.sync="editDialogVisible" width="30%" @close="editDialogClosed">
+      <el-form ref="editFormRef" :model="editForm" :rules="addFormRules" label-width="80px">
+        <el-form-item label="rfid">
+          <el-input v-model="editForm.rfid" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="车号" prop="carnum">
+          <el-input v-model="editForm.carnum"></el-input>
+        </el-form-item>
+        <el-form-item label="矿车地址" prop="address">
+          <el-input v-model="editForm.address"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editConfigInfo">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -45,7 +79,8 @@ export default {
   data(){
     return{
       recordlist: [],
-      dateValue: new Date().toLocaleDateString()
+      dateValue: new Date(),
+      editDialogVisible: false,
 
     }
   },
@@ -54,12 +89,16 @@ export default {
   },
   methods:{
     getList(){
-      queryConditional({date:parseTime(this.dateValue,"{y}-{m}-{d}")}).then(resp => {
+      queryConditional(this.$qs.stringify({date:parseTime(this.dateValue,"{y}-{m}-{d}")})).then(resp => {
         this.recordlist=resp.data
       }).catch(error => {
         console.log(error)
       })
+    },
+    editDialogClosed() {
+
     }
+
 
   }
 }
