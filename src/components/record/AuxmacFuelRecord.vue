@@ -12,12 +12,12 @@
       <el-row :gutter="20">
         <!-- 日期选择 -->
         <el-col :span="5">
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期">
+          <el-date-picker v-model="timevalue" type="date" placeholder="选择日期">
           </el-date-picker>
         </el-col>
         <!-- 查询按钮 -->
         <el-col :span="4">
-          <el-button icon="el-icon-search" type="primary">查询</el-button>
+          <el-button icon="el-icon-search" type="primary" @click="getAuxMacConfig">查询</el-button>
         </el-col>
       </el-row>
 
@@ -25,9 +25,9 @@
       <el-table :data="AuxcarfuelList" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="480">
         <el-table-column label="辅助车号" prop="AuxcarNum"></el-table-column>
         <el-table-column label="车型" prop="carType"></el-table-column>
-        <el-table-column label="油卡编号" prop="gasCard"></el-table-column>
-        <el-table-column label="加油升数" prop="gasVolume"></el-table-column>
-        <el-table-column label="油品单价" prop="gasPrice"></el-table-column>
+        <el-table-column label="油卡编号" prop="oilCard"></el-table-column>
+        <el-table-column label="加油升数" prop="oilVolume"></el-table-column>
+        <el-table-column label="油品单价" prop="initPrice"></el-table-column>
         <el-table-column label="金额" prop="totalPrice"></el-table-column>
       </el-table>
 
@@ -40,33 +40,79 @@
 export default {
   data() {
     return {
-      AuxcarfuelList: [
+      timevalue: '',
+      //加油API接口获得的数据
+      oilAPI: [
         {
-          AuxcarNum: '002#',
-          carType: '装载机',
-          gasCard: '1357955',
-          gasVolume: '5',
-          gasPrice: '6',
-          totalPrice: '30',
+          AuxcarNum: '1号',
+          oilCard: '1357955',
+          oilVolume: '5',
         },
         {
-          AuxcarNum: '503#',
-          carType: '水车',
-          gasCard: '1111555',
-          gasVolume: '5',
-          gasPrice: '5.5',
-          totalPrice: '27.5',
+          AuxcarNum: '2号',
+          oilCard: '1111555',
+          oilVolume: '6',
         },
         {
-          AuxcarNum: '501#',
-          carType: '钻机',
-          gasCard: '3455667',
-          gasVolume: '5',
-          gasPrice: '5.5',
-          totalPrice: '27.5',
+          AuxcarNum: '3号',
+          oilCard: '3455667',
+          oilVolume: '7',
         },
       ],
+      //辅助车辆配置表
+      AuxcarConfiglist: [],
+      //拼接成辅助车辆加油情况表
+      AuxcarfuelList: [],
     }
+  },
+
+  //自动获取当前日期的数据
+  created() {
+    const date = new Date()
+    const nowdate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    }
+    const newmonth = nowdate.month > 10 ? nowdate.month : '0' + nowdate.month
+    const newday = nowdate.day > 10 ? nowdate.day : '0' + nowdate.day
+    this.timevalue = nowdate.year + '-' + newmonth + '-' + newday
+    //console.log(this.timevalue)
+    this.getAuxMacConfig()
+  },
+  methods: {
+    //获取配置信息请求
+    async getAuxMacConfig() {
+      this.AuxcarfuelList=new Array()
+      var that = this
+      const { data: res } = await this.$http.get(
+        'http://localhost:8083/Server/AuxMachine/getConfig',
+        {
+          params: { timevalue: this.timevalue },
+        }
+      )
+      if (res.result.code !== '20000') {
+        return that.$message.error('获取辅助车辆配置表失败')
+      }
+      this.AuxcarConfiglist = res.data
+      //与油卡API信息进行拼接
+      for (let i = 0; i < this.AuxcarConfiglist.length; i++) {
+        for (let j = 0; j < this.oilAPI.length; j++) {
+          if (this.AuxcarConfiglist[i].carId == this.oilAPI[j].AuxcarNum) {
+            this.AuxcarfuelList.push({
+              AuxcarNum: this.AuxcarConfiglist[i].carId,
+              carType: this.AuxcarConfiglist[i].carType,
+              oilCard: this.oilAPI[j].oilCard,
+              oilVolume: this.oilAPI[j].oilVolume,
+              initPrice: this.AuxcarConfiglist[i].price,
+              totalPrice: this.oilAPI[j].oilVolume * this.AuxcarConfiglist[i].price,
+            })
+          }
+        }
+      }
+      
+      console.log(this.AuxcarConfiglist)
+    },
   },
 }
 </script>

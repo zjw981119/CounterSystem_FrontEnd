@@ -12,7 +12,7 @@
       <el-row :gutter="20">
         <!-- 日期选择 -->
         <el-col :span="5">
-          <el-date-picker v-model="value1" type="date" placeholder="选择日期">
+          <el-date-picker v-model="timevalue" type="date" placeholder="选择日期">
           </el-date-picker>
         </el-col>
         <!-- 查询按钮 -->
@@ -24,14 +24,14 @@
       <!-- 配置列表区域 -->
       <el-table :data="carfuelList" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="480">
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="车号" prop="carNum"></el-table-column>
+        <el-table-column label="车号" prop="carNum" ></el-table-column>
         <el-table-column label="车型" prop="carType"></el-table-column>
         <el-table-column label="内部/外部" prop="condition"></el-table-column>
         <el-table-column label="车主姓名" prop="ownerName"></el-table-column>
-        <el-table-column label="油卡编号" prop="gasCard"></el-table-column>
-        <el-table-column label="加油时间" prop="addTime"></el-table-column>
-        <el-table-column label="加油升数" prop="gasVolume"></el-table-column>
-        <el-table-column label="油品单价" prop="gasPrice"></el-table-column>
+        <el-table-column label="油卡编号" prop="oilCard"></el-table-column>
+        <el-table-column label="加油时间" prop="addTime" width="200px"></el-table-column>
+        <el-table-column label="加油升数" prop="oilVolume"></el-table-column>
+        <el-table-column label="油品单价" prop="initPrice"></el-table-column>
         <el-table-column label="金额" prop="totalPrice"></el-table-column>
       </el-table>
 
@@ -44,42 +44,89 @@
 export default {
   data() {
     return {
-      carfuelList: [
+      timevalue: '',
+      //加油API接口获得的数据
+      oilAPI: [
         {
           carNum: '002#',
-          carType: '自卸车',
-          condition: '外部',
-          ownerName: '磐宏',
-          gasCard: '',
-          gasVolume: '5',
-          addTime: '2021-5-12 10:58:46',
-          gasPrice: '6',
-          totalPrice: '30',
-        },
-        {
-          carNum: '503#',
-          carType: '自卸车',
-          condition: '外部',
-          ownerName: '磐宏',
-          gasCard: '',
-          gasVolume: '5',
-          addTime: '2021-5-12 15:40:30',
-          gasPrice: '5.5',
-          totalPrice: '27.5',
+          oilCard: '1357955',
+          oilVolume: '5',
+          addTime: '2021-05-08 15:00:00',
         },
         {
           carNum: '501#',
-          carType: '自卸车',
-          condition: '内部',
-          ownerName: '磐宏',
-          gasCard: '',
-          gasVolume: '5',
-          addTime: '2021-5-12 15:40:30',
-          gasPrice: '5.5',
-          totalPrice: '27.5',
+          oilCard: '1111555',
+          oilVolume: '6',
+          addTime: '2021-05-09 16:00:00',
+        },
+        {
+          carNum: '503#',
+          oilCard: '3455667',
+          oilVolume: '7',
+          addTime: '2021-05-09 17:00:00',
         },
       ],
+
+      //辅助车辆配置表
+      carConfiglist: [],
+
+      //拼接车辆油量表
+      carfuelList: [],
     }
+  },
+
+  //自动获取当前日期的数据
+  created() {
+    const date = new Date()
+    const nowdate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    }
+    const newmonth = nowdate.month > 10 ? nowdate.month : '0' + nowdate.month
+    const newday = nowdate.day > 10 ? nowdate.day : '0' + nowdate.day
+    this.timevalue = nowdate.year + '-' + newmonth + '-' + newday
+    //console.log(this.timevalue)
+    this.getCarConfig()
+  },
+
+  methods: {
+    //获取配置信息请求
+    async getCarConfig() {
+      this.carConfiglist = new Array()
+      var that = this
+      const { data: res } = await this.$http.get(
+        'http://localhost:8083/Server/Carconfig/getConfig',
+        {
+          params: { timevalue: this.timevalue },
+        }
+      )
+      if (res.result.code !== '20000') {
+        return that.$message.error('获取车辆配置表失败')
+      }
+      this.carConfiglist = res.data
+      //与油卡API信息进行拼接
+      for (let i = 0; i < this.carConfiglist.length; i++) {
+        for (let j = 0; j < this.oilAPI.length; j++) {
+          if (this.carConfiglist[i].carNum == this.oilAPI[j].carNum) {
+            this.carfuelList.push({
+              carNum: this.carConfiglist[i].carNum,
+              carType: this.carConfiglist[i].carType,
+              condition:this.carConfiglist[i].place,
+              ownerName:this.carConfiglist[i].ownerName,
+              oilCard: this.oilAPI[j].oilCard,
+              addTime:this.oilAPI[j].addTime,
+              oilVolume: this.oilAPI[j].oilVolume,
+              initPrice: this.carConfiglist[i].initPrice,
+              totalPrice:
+                this.oilAPI[j].oilVolume * this.carConfiglist[i].initPrice,
+            })
+          }
+        }
+      }
+
+      console.log(this.carConfiglist)
+    },
   },
 }
 </script>

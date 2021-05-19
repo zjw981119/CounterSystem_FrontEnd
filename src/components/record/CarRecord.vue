@@ -13,13 +13,29 @@
         <!-- 日期时间选择器 -->
         <!-- value-format:"yyyy-MM-dd HH:mm:ss" -->
         <el-col :span="8">
-          <el-date-picker v-model="timevalue" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['06:00:00', '06:00:00']" value-format="yyyy-MM-dd HH:mm:ss">
+          <el-date-picker v-model="timevalue" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['06:00:00', '06:00:00']" value-format="yyyy-MM-dd HH:mm:ss" @change="getSelection">
           </el-date-picker>
         </el-col>
-        <!-- 查询车号输入框 -->
+        <!-- 车号选择器 -->
         <el-col :span="4">
-          <el-input placeholder="请输入想要查询的车号" v-model="queryInfo.queryCar" clearable>
-          </el-input>
+          <el-select v-model="queryInfo.queryCar" placeholder="选择车号" clearable>
+            <el-option v-for="item in Carnumoptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <!-- 刷卡器选择器 -->
+        <el-col :span="4">
+          <el-select v-model="queryInfo.queryAddress" placeholder="选择刷卡器编号" clearable>
+            <el-option v-for="item in Addressoptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <!-- 挖机选择器 -->
+        <el-col :span="4">
+          <el-select v-model="queryInfo.queryDigger" placeholder="选择挖机号" clearable>
+            <el-option v-for="item in Diggeroptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
         </el-col>
         <!-- 查询按钮 -->
         <el-col :span="2">
@@ -86,7 +102,7 @@
       </el-table>
 
       <!-- 分页区域 -->
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 20, 40]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[20, 40, 60]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total" v-show="isShow">
       </el-pagination>
     </el-card>
 
@@ -98,19 +114,49 @@ export default {
   data() {
     return {
       timevalue: '',
-
+      isShow: false,
+      //查询请求对象
       queryInfo: {
         queryCar: '',
+        queryAddress: '',
+        queryDigger: '',
         beginTime: '',
         endTime: '',
         //当前页数
         pagenum: 1,
         //每页数据条数
-        pagesize: 10,
+        pagesize: 40,
+      },
+
+      //选择器对象
+      selectionlist: {
+        carnumSelection: [],
+        addressSelection: [],
+        diggerSelection: [],
       },
       total: 0,
       carload: '',
-
+      //车号选择器
+      Carnumoptions: [
+        {
+          value: '',
+          label: '',
+        },
+      ],
+      //刷卡器选择器
+      Addressoptions: [
+        {
+          value: '',
+          label: '',
+        },
+      ],
+      //挖机选择器
+      Diggeroptions: [
+        {
+          value: '',
+          label: '',
+        },
+      ],
       //物料选择器的数据
       MaterialOptions: [
         {
@@ -146,16 +192,80 @@ export default {
       recordlist: [],
 
       updatelist: [],
-
-      selectlist: [],
     }
   },
 
   methods: {
+    //获得选择器数据
+    async getSelection() {
+      var that = this
+      //清空前端选择器
+      this.Carnumoptions = new Array()
+      this.Addressoptions = new Array()
+      this.Diggeroptions = new Array()
+      //清空日期时不请求数据
+      if (this.timevalue == 0 || this.timevalue == null) {
+        return
+      }
+      const {
+        data: res,
+      } = await this.$http.get(
+        'http://localhost:8083/Server/counter/getSelection',
+        { params: { beginTime: this.timevalue[0], endTime: this.timevalue[1] } }
+      )
+      if (res.result.code !== '20000') {
+        return that.$message.error('获取选择器数据失败')
+      }
+      this.selectionlist = res.data
+      //车号选择器赋值
+      this.Carnumoptions.pop()
+      for (
+        let index = 0;
+        index < this.selectionlist.carnumSelection.length;
+        index++
+      ) {
+        this.Carnumoptions.push({
+          value: this.selectionlist.carnumSelection[index],
+          label: this.selectionlist.carnumSelection[index],
+        })
+      }
+      //刷卡选择器赋值
+      this.Addressoptions.pop()
+      for (
+        let index = 0;
+        index < this.selectionlist.addressSelection.length;
+        index++
+      ) {
+        this.Addressoptions.push({
+          value: this.selectionlist.addressSelection[index],
+          label: this.selectionlist.addressSelection[index],
+        })
+      }
+      //挖机选择器赋值
+      this.Diggeroptions.pop()
+      for (
+        let index = 0;
+        index < this.selectionlist.diggerSelection.length;
+        index++
+      ) {
+        this.Diggeroptions.push({
+          value: this.selectionlist.diggerSelection[index],
+          label: this.selectionlist.diggerSelection[index],
+        })
+      }
+      console.log(this.selectionlist)
+    },
 
     //获取矿车工作记录数据
     async getRecordData() {
       var that = this
+      //满足分页查询条件时，pagination显示
+      if(this.queryInfo.queryCar==''&&this.queryInfo.queryAddress==''&&this.queryInfo.queryDigger==''){
+        this.isShow=true
+      }
+      else{
+        this.isShow=false
+      }
       console.log(this.timevalue)
       console.log(this.queryInfo.queryCar)
       if (this.timevalue == 0 || this.timevalue == null) {
@@ -285,7 +395,7 @@ export default {
     async UploadData() {
       var that = this
       //清空列表
-      this.updatelist=new Array()
+      this.updatelist = new Array()
 
       var selectionLength = this.$refs.multipleTable.selection.length
       var recordLength = this.recordlist.length
@@ -330,7 +440,7 @@ export default {
             material: this.$refs.multipleTable.selection[index].material,
             distance: this.$refs.multipleTable.selection[index].distance,
             price: this.$refs.multipleTable.selection[index].price,
-            isFull:this.$refs.multipleTable.selection[index].isFull,
+            isFull: this.$refs.multipleTable.selection[index].isFull,
             additionalCount: this.$refs.multipleTable.selection[index]
               .additionalCount,
           })
