@@ -138,6 +138,7 @@
 export default {
   data() {
     return {
+
       timevalue: '',
 
       configlist: [
