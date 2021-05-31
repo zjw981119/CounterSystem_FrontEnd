@@ -72,8 +72,8 @@
 </template>
 
 <script>
-import { queryConditional } from '@/api/DiggerConfig'
-import { parseTime } from '@/utils/time-util'
+import { queryConditional } from '../../api/DiggerConfig'
+import { parseTime } from '../../utils/time-util'
 
 export default {
   data(){
