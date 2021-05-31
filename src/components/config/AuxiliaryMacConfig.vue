@@ -47,7 +47,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" >
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <!-- 修改按钮 -->
             <el-tooltip effect="dark" content="新增配置信息" placement="top" :enterable="false">
@@ -120,7 +120,7 @@ export default {
       }
       this.configlist = res.data
       //如果查询到0条数据，则添加一条空白数据
-      if(this.configlist.length==0){
+      if (this.configlist.length == 0) {
         this.addConfig()
       }
       console.log(res)
@@ -186,7 +186,7 @@ export default {
       }
 
       //没有选择日期，不能上传
-      if (this.timevalue == '') {
+      if (this.timevalue == '' || this.timevalue == null) {
         return this.$message.error('必须选择日期')
       }
       //提交数据为0
@@ -209,6 +209,7 @@ export default {
         return that.$message.error('修改数据失败')
       }
       that.$message.success('修改数据成功')
+      this.getAuxMacConfig
     },
   },
 }
