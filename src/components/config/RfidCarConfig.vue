@@ -50,7 +50,7 @@
       <!-- 内容主体区域 -->
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
         <!-- rfid卡号 -->
-        <el-form-item label="rfid" prop="rfid">
+        <el-form-item label="RFID" prop="rfid">
           <el-input v-model="addForm.rfid"></el-input>
         </el-form-item>
         <!-- 车号 -->
@@ -72,7 +72,7 @@
     <!-- 修改配置信息的对话框 -->
     <el-dialog title="修改配置信息" :visible.sync="editDialogVisible" width="30%" @close="editDialogClosed">
       <el-form ref="editFormRef" :model="editForm" :rules="addFormRules" label-width="80px">
-        <el-form-item label="rfid">
+        <el-form-item label="RFID">
           <el-input v-model="editForm.rfid" disabled></el-input>
         </el-form-item>
         <el-form-item label="车号" prop="carnum">
