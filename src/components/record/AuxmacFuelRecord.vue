@@ -37,26 +37,51 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
+
 export default {
   data() {
     return {
+      //请求地址
+      baseURL: GLOBAL.baseURL,
       timevalue: '',
       //加油API接口获得的数据
       oilAPI: [
         {
           AuxcarNum: '1号',
-          oilCard: '1357955',
+          oilCard: '7283801',
           oilVolume: '5',
         },
         {
           AuxcarNum: '2号',
-          oilCard: '1111555',
+          oilCard: '7283803',
           oilVolume: '6',
         },
         {
           AuxcarNum: '3号',
-          oilCard: '3455667',
+          oilCard: '7283805',
           oilVolume: '7',
+        },
+        {
+          AuxcarNum: '4号',
+          oilCard: '7283807',
+          oilVolume: '6',
+        },
+        {
+          AuxcarNum: '5号',
+          oilCard: '7283809',
+          oilVolume: '6',
+        },
+        {
+          AuxcarNum: '6号',
+          oilCard: '7283811',
+          oilVolume: '5',
+        },
+        {
+          AuxcarNum: '7号',
+          oilCard: '7283813',
+          oilVolume: '6',
         },
       ],
       //辅助车辆配置表
@@ -83,10 +108,10 @@ export default {
   methods: {
     //获取配置信息请求
     async getAuxMacConfig() {
-      this.AuxcarfuelList=new Array()
+      this.AuxcarfuelList = new Array()
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/AuxMachine/getConfig',
+        this.baseURL + 'AuxMachine/getConfig',
         {
           params: { timevalue: this.timevalue },
         }
@@ -105,12 +130,13 @@ export default {
               oilCard: this.oilAPI[j].oilCard,
               oilVolume: this.oilAPI[j].oilVolume,
               initPrice: this.AuxcarConfiglist[i].price,
-              totalPrice: this.oilAPI[j].oilVolume * this.AuxcarConfiglist[i].price,
+              totalPrice:
+                this.oilAPI[j].oilVolume * this.AuxcarConfiglist[i].price,
             })
           }
         }
       }
-      
+
       console.log(this.AuxcarConfiglist)
     },
   },

@@ -47,7 +47,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" >
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <!-- 修改按钮 -->
             <el-tooltip effect="dark" content="新增配置信息" placement="top" :enterable="false">
@@ -66,9 +66,15 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
+
 export default {
   data() {
     return {
+      //请求地址
+      baseURL: GLOBAL.baseURL,
+
       timevalue: '',
       configlist: [
         {
@@ -110,7 +116,7 @@ export default {
     async getAuxMacConfig() {
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/AuxMachine/getConfig',
+        this.baseURL + 'AuxMachine/getConfig',
         {
           params: { timevalue: this.timevalue },
         }
@@ -120,7 +126,7 @@ export default {
       }
       this.configlist = res.data
       //如果查询到0条数据，则添加一条空白数据
-      if(this.configlist.length==0){
+      if (this.configlist.length == 0) {
         this.addConfig()
       }
       console.log(res)
@@ -155,7 +161,7 @@ export default {
       } else {
         //若存在id,则像后端发送请求，对数据库进行删除操作
         const { data: res } = await this.$http.get(
-          'http://localhost:8083/Server/AuxMachine/delete?id=' + config.id
+          this.baseURL + 'AuxMachine/delete?id=' + config.id
         )
         if (res.result.code !== '20000') {
           return that.$message.error('删除配置信息失败')
@@ -186,7 +192,7 @@ export default {
       }
 
       //没有选择日期，不能上传
-      if (this.timevalue == '') {
+      if (this.timevalue == '' || this.timevalue == null) {
         return this.$message.error('必须选择日期')
       }
       //提交数据为0
@@ -201,14 +207,14 @@ export default {
       console.log(this.configlist)
       //发送请求
       const { data: res } = await this.$http.post(
-        'http://localhost:8083/Server/AuxMachine/setConfig?timevalue=' +
-          this.timevalue,
+        this.baseURL + 'AuxMachine/setConfig?timevalue=' + this.timevalue,
         this.configlist
       )
       if (res.result.code !== '20000') {
         return that.$message.error('修改数据失败')
       }
       that.$message.success('修改数据成功')
+      this.getAuxMacConfig
     },
   },
 }

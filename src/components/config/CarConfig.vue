@@ -9,7 +9,6 @@
     <!-- 卡片视图区 -->
     <el-card>
 
-      
       <!-- 日期选择与查询 -->
       <el-row :gutter="10">
         <!-- 日期选择 -->
@@ -135,9 +134,14 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
+
 export default {
   data() {
     return {
+      //请求地址
+      baseURL: GLOBAL.baseURL,
 
       timevalue: '',
 
@@ -247,12 +251,10 @@ export default {
       //如果是新增的空数据，则直接删除前端列表中的对象
       if (config.id == '') {
         this.configlist.pop()
-      } 
-      else 
-      {
+      } else {
         //若存在id,则像后端发送请求，对数据库进行删除操作
         const { data: res } = await this.$http.get(
-          'http://localhost:8083/Server/Carconfig/delete?id=' + config.id
+          this.baseURL + 'Carconfig/delete?id=' + config.id
         )
         if (res.result.code !== '20000') {
           return that.$message.error('删除配置信息失败')
@@ -267,7 +269,7 @@ export default {
     async getCarConfig() {
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/Carconfig/getConfig',
+        this.baseURL + 'Carconfig/getConfig',
         {
           params: { timevalue: this.timevalue },
         }
@@ -277,7 +279,7 @@ export default {
       }
       this.configlist = res.data
       //如果查询到0条数据，则添加一条空白数据
-      if(this.configlist.length==0){
+      if (this.configlist.length == 0) {
         this.addConfig()
       }
       console.log(res.data)
@@ -303,7 +305,7 @@ export default {
       }
 
       //没有选择日期，不能上传
-      if (this.timevalue == '') {
+      if (this.timevalue == '' || this.timevalue == null) {
         return this.$message.error('必须选择日期')
       }
       //提交数据为0
@@ -318,8 +320,7 @@ export default {
       console.log(this.configlist)
       //发送请求
       const { data: res } = await this.$http.post(
-        'http://localhost:8083/Server/Carconfig/setConfig?timevalue=' +
-          this.timevalue,
+        this.baseURL + 'Carconfig/setConfig?timevalue=' + this.timevalue,
         this.configlist
       )
       if (res.result.code !== '20000') {
