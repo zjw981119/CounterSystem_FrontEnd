@@ -24,7 +24,7 @@
       <!-- 配置列表区域 -->
       <el-table :data="carfuelList" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="480">
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="车号" prop="carNum" ></el-table-column>
+        <el-table-column label="车号" prop="carNum"></el-table-column>
         <el-table-column label="车型" prop="carType"></el-table-column>
         <el-table-column label="内部/外部" prop="condition"></el-table-column>
         <el-table-column label="车主姓名" prop="ownerName"></el-table-column>
@@ -41,9 +41,14 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
+
 export default {
   data() {
     return {
+      //请求地址
+      baseURL: GLOBAL.baseURL,
       timevalue: '',
       //加油API接口获得的数据
       oilAPI: [
@@ -120,7 +125,7 @@ export default {
       this.carConfiglist = new Array()
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/Carconfig/getConfig',
+        this.baseURL + 'Carconfig/getConfig',
         {
           params: { timevalue: this.timevalue },
         }
@@ -136,10 +141,10 @@ export default {
             this.carfuelList.push({
               carNum: this.carConfiglist[i].carNum,
               carType: this.carConfiglist[i].carType,
-              condition:this.carConfiglist[i].place,
-              ownerName:this.carConfiglist[i].ownerName,
+              condition: this.carConfiglist[i].place,
+              ownerName: this.carConfiglist[i].ownerName,
               oilCard: this.oilAPI[j].oilCard,
-              addTime:this.oilAPI[j].addTime,
+              addTime: this.oilAPI[j].addTime,
               oilVolume: this.oilAPI[j].oilVolume,
               initPrice: this.carConfiglist[i].initPrice,
               totalPrice:

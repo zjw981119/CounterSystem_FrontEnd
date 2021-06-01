@@ -98,7 +98,7 @@
           <template slot-scope="scope">
             <!-- <el-image style="width: 50px; height: 50px" :src="scope.row.picture" :preview-src-list="[scope.row.picture]">
             </el-image> -->
-            <el-popover placement="right" trigger="click" width="700">
+            <el-popover placement="right" trigger="hover" width="700">
               <el-image slot="reference" :src="img_url+ scope.row.id"></el-image>
               <el-image :src="img_url+ scope.row.id"></el-image>
             </el-popover>
@@ -115,10 +115,14 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
 export default {
   data() {
     return {
-      img_url: 'http://localhost:8083/Server/file/showImage/',
+      //请求地址
+      baseURL: GLOBAL.baseURL,
+      img_url: 'http://222.74.94.190:8093/Server/file/showImage/',
 
       timevalue: '',
       isShow: false,
@@ -214,10 +218,8 @@ export default {
       if (this.timevalue == 0 || this.timevalue == null) {
         return
       }
-      const {
-        data: res,
-      } = await this.$http.get(
-        'http://localhost:8083/Server/counter/getSelection',
+      const { data: res } = await this.$http.get(
+        this.baseURL + 'counter/getSelection',
         { params: { beginTime: this.timevalue[0], endTime: this.timevalue[1] } }
       )
       if (res.result.code !== '20000') {
@@ -284,7 +286,7 @@ export default {
       this.queryInfo.beginTime = this.timevalue[0]
       this.queryInfo.endTime = this.timevalue[1]
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/counter/getRecord',
+        this.baseURL + 'counter/getRecord',
         {
           params: this.queryInfo,
         }
@@ -459,54 +461,13 @@ export default {
 
       //发送请求
       const { data: res } = await this.$http.post(
-        'http://localhost:8083/Server/counter/setRecord',
+        this.baseURL + 'counter/setRecord',
         this.updatelist
       )
       if (res.result.code !== '20000') {
         return that.$message.error('修改数据失败')
       }
       that.$message.success('修改数据成功')
-    },
-
-    //车载修改按钮
-    async changeCarload() {
-      var that = this
-      //弹框询问是否想要修改
-      const confirmResult = await this.$confirm(
-        '此操作将修改所选数据行的车载信息为空载, 是否继续?',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }
-      ).catch((err) => err)
-      if (confirmResult !== 'confirm') {
-        return this.$message.info('已取消修改')
-      }
-
-      this.selectlist = this.$refs.multipleTable.selection
-      //没有选中数据
-      if (this.selectlist.length == 0)
-        return this.$message.error('没有选中的数据行')
-      console.log(this.selectlist)
-      var selectID = new Array()
-      for (let index = 0; index < this.selectlist.length; index++) {
-        selectID.push(this.selectlist[index].id)
-      }
-      const {
-        data: res,
-      } = await this.$http.post(
-        'http://localhost:8083/Server/counter/setCarload',
-        { IdList: selectID, CarLoad: this.carload }
-      )
-      if (res.result.code !== '20000') {
-        return that.$message.error('修改车载信息失败')
-      }
-      that.$message.success('修改车载信息成功')
-      //console.log(selectID)
-      //刷新表格
-      this.getRecordData()
     },
   },
 }

@@ -134,9 +134,15 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
+
 export default {
   data() {
     return {
+      //请求地址
+      baseURL: GLOBAL.baseURL,
+
       timevalue: '',
 
       configlist: [
@@ -248,7 +254,7 @@ export default {
       } else {
         //若存在id,则像后端发送请求，对数据库进行删除操作
         const { data: res } = await this.$http.get(
-          'http://localhost:8083/Server/Carconfig/delete?id=' + config.id
+          this.baseURL + 'Carconfig/delete?id=' + config.id
         )
         if (res.result.code !== '20000') {
           return that.$message.error('删除配置信息失败')
@@ -263,7 +269,7 @@ export default {
     async getCarConfig() {
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/Carconfig/getConfig',
+        this.baseURL + 'Carconfig/getConfig',
         {
           params: { timevalue: this.timevalue },
         }
@@ -314,8 +320,7 @@ export default {
       console.log(this.configlist)
       //发送请求
       const { data: res } = await this.$http.post(
-        'http://localhost:8083/Server/Carconfig/setConfig?timevalue=' +
-          this.timevalue,
+        this.baseURL + 'Carconfig/setConfig?timevalue=' + this.timevalue,
         this.configlist
       )
       if (res.result.code !== '20000') {

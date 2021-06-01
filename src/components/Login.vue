@@ -27,14 +27,20 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
+
 export default {
 
   data(){
     return{
+      //请求地址
+      baseURL:GLOBAL.baseURL,
+
       // 登陆表单数据绑定对象
       loginForm:{
-        username: 'admin',
-        password: 'gnkj2019'
+        username: '',
+        password: ''
       },
 
       //表单验证规则对象
@@ -63,6 +69,7 @@ export default {
     },
 
     login(){
+      console.log(this.baseURL)
       this.$refs.loginFormRef.validate(async valid =>{
         var that=this;
         if (!valid) {
@@ -71,7 +78,7 @@ export default {
         }
         //可以发起添加配置信息的网络请求
         const { data: res } = await this.$http.post(
-          'http://localhost:8083/Server/login',
+          this.baseURL+'login',
           this.loginForm
         )
         if (res.result.code !== '20000') {

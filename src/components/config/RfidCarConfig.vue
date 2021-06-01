@@ -91,6 +91,9 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
+
 export default {
   data() {
     //验证rfid规则
@@ -119,6 +122,8 @@ export default {
     }
 */
     return {
+      //请求地址
+      baseURL: GLOBAL.baseURL,
       //获取rfid配置表的参数对象
       queryInfo: {
         query: '',
@@ -173,7 +178,7 @@ export default {
     async getConfig() {
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/Rfidshow/initConfig',
+        this.baseURL + 'Rfidshow/initConfig',
         {
           params: this.queryInfo,
         }
@@ -198,7 +203,7 @@ export default {
         if (!valid) return
         //可以发起添加配置信息的网络请求
         const { data: res } = await this.$http.post(
-          'http://localhost:8083/Server/Rfidshow/add',
+          this.baseURL + 'Rfidshow/add',
           this.addForm
         )
         if (res.result.code !== '20000') {
@@ -229,7 +234,7 @@ export default {
         if (!valid) return
         //发起修改配置信息的数据请求
         const { data: res } = await this.$http.post(
-          'http://localhost:8083/Server/Rfidshow/update',
+          this.baseURL + 'Rfidshow/update',
           this.editForm
         )
         if (res.result.code !== '20000') {
@@ -264,7 +269,7 @@ export default {
         return this.$message.info('已取消删除')
       }
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/Rfidshow/delete?rfid=' + rfid
+        this.baseURL + 'Rfidshow/delete?rfid=' + rfid
       )
       if (res.result.code !== '20000') {
         return that.$message.error('删除用户失败')
