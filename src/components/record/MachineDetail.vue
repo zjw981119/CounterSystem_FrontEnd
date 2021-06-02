@@ -65,8 +65,7 @@
         <el-table
           id="table"
           :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-          :summary-method="getSummaries"
-          show-summary
+          :row-class-name="tableRowClassName">
           border
           fit
           highlight-current-row
@@ -116,17 +115,17 @@
           </el-table-column>
           <el-table-column label="装运收入" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ row.tripNum * row.multiple * row.unitPrice }}</span>
+              <span>{{ row.loadTransportIncome }}</span>
             </template>
           </el-table-column>
           <el-table-column label="标箱车数" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ row.multiple * row.tripNum }}</span>
+              <span>{{ row.biaoxiangCar }}</span>
             </template>
           </el-table-column>
           <el-table-column label="方量" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ row.multiple * row.tripNum * row.biaoxiang }}</span>
+              <span>{{ row.volume }}</span>
             </template>
           </el-table-column>
           <el-table-column label="计时收入" width="100px" align="center">
@@ -136,12 +135,12 @@
           </el-table-column>
           <el-table-column label="装煤收入" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ row.tripNum * row.unitPrice }}</span>
+              <span>{{ row.loadCoalIncome }}</span>
             </template>
           </el-table-column>
           <el-table-column label="毛收入" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ (row.tripNum * row.multiple * row.unitPrice) + (row.timeIncome) + (row.tripNum * row.unitPrice) }}</span>
+              <span>{{ row.grossIncome }}</span>
             </template>
           </el-table-column>
           <el-table-column label="加油升数" width="100px" align="center">
@@ -151,7 +150,7 @@
           </el-table-column>
           <el-table-column label="燃油费" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ row.sumOilL * row.unitPrice }}</span>
+              <span>{{ row.fuelFee }}</span>
             </template>
           </el-table-column>
           <el-table-column label="工资" width="100px" align="center">
@@ -186,19 +185,17 @@
           </el-table-column>
           <el-table-column label="利润" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ (row.tripNum * row.multiple * row.unitPrice + row.timeIncome + row.tripNum * row.unitPrice)
-                - (row.sumOilL * row.unitPrice) - (row.salary) - (row.maintenanceFee) -(row.mealFee) -(row.accessoryFee) -(row.penalty) -(row.reward)}}</span>
+              <span>{{ row.profit }}</span>
             </template>
           </el-table-column>
           <el-table-column label="单车消耗" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ row.sumOilL / row.tripNum }}</span>
+              <span>{{ row.oilConsumePerCar }}</span>
             </template>
           </el-table-column>
           <el-table-column label="油耗比" width="100px" align="center">
             <template slot-scope="{ row }">
-              <span>{{ (row.sumOilL * row.unitPrice) / ((row.tripNum * row.multiple * row.unitPrice + row.timeIncome + row.tripNum * row.unitPrice)
-              - (row.sumOilL * row.unitPrice) - (row.salary) - (row.maintenanceFee) -(row.mealFee) -(row.accessoryFee) -(row.penalty) -(row.reward)) }}</span>
+              <span>{{ row.oilConsumeRatio }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -299,9 +296,12 @@ export default {
     this.getList()
   },
   methods: {
-    getSummaries(param) {
-      const { columns, data } = param;
-      console.log('coulcumns==',columns,'data==',data)
+    tableRowClassName({row}) {
+      if (row.carNo === '合计') {
+        return 'total-row'
+      }else {
+        return ''
+      }
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
@@ -343,6 +343,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.el-table .total-row {
+  background: cadetblue;
+}
 </style>
