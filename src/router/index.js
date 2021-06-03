@@ -13,8 +13,8 @@ import DiggerConfig from '../components/config/DiggerConfig.vue'
 import CarConfig from '../components/config/CarConfig.vue'
 import AuxMacConfig from '../components/config/AuxiliaryMacConfig.vue'
 import RfidConfig from '../components/config/RfidCarConfig.vue'
+import MaRecord from '../components/record/MaRecord.vue'
 import MachineDetail from '@/components/record/MachineDetail'
-
 
 // 安装路由模块
 Vue.use(Router)
@@ -39,6 +39,7 @@ const router = new Router({
         { path: '/carconfig', component: CarConfig },
         { path: '/auxmacconfig', component: AuxMacConfig },
         { path: '/rfidconfig', component: RfidConfig },
+        { path: '/marecord', component: MaRecord },
         { path: '/machinedetail', component: MachineDetail },
       ]
     }
