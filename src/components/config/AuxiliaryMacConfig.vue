@@ -49,9 +49,9 @@
 
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <!-- 修改按钮 -->
+            <!-- 添加按钮 -->
             <el-tooltip effect="dark" content="新增配置信息" placement="top" :enterable="false">
-              <el-button type="primary" icon="el-icon-edit" size="medium" @click="addConfig"></el-button>
+              <el-button type="primary" icon="el-icon-plus" size="medium" @click="addConfig"></el-button>
             </el-tooltip>
             <!-- 删除按钮 -->
             <el-tooltip effect="dark" content="删除配置信息" placement="top" :enterable="false">

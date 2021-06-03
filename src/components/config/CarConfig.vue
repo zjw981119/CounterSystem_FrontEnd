@@ -121,9 +121,9 @@
 
         <el-table-column label="操作" width="150px" fixed="right">
           <template slot-scope="scope">
-            <!-- 修改按钮 -->
+            <!-- 添加按钮 -->
             <el-tooltip effect="dark" content="新增配置信息" placement="top" :enterable="false">
-              <el-button type="primary" icon="el-icon-edit" size="mini" @click="addConfig"></el-button>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="addConfig"></el-button>
             </el-tooltip>
             <!-- 删除按钮 -->
             <el-tooltip effect="dark" content="删除配置信息" placement="top" :enterable="false">
@@ -305,7 +305,7 @@ export default {
       this.carNumOptions = new Array()
       const { data: res } = await this.$http.get(
         //this.baseURL + 'Carconfig/getCarNum',
-        'http://localhost:8083/Server/Carconfig/getCarNum',
+        this.baseURL +'Carconfig/getCarNum',
         {
           params: { address: 'PANH' },
         }
