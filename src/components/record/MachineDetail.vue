@@ -7,71 +7,71 @@
       <el-breadcrumb-item>机械明细表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
-    <span>生效时间：</span>
+      <span>生效时间：</span>
       <el-date-picker
-        v-model="listQuery.dateRange"
-        type="datetimerange"
-        style="margin-left: 10px"
-        align="right"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        :picker-options="pickerOptions"
-        value-format="yyyy-MM-dd HH:mm:ss"
+          v-model="listQuery.dateRange"
+          type="datetimerange"
+          style="margin-left: 10px"
+          align="right"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :picker-options="pickerOptions"
+          value-format="yyyy-MM-dd HH:mm:ss"
       >
       </el-date-picker>
       <span> 车辆类型：</span>
       <el-select
-        v-model="listQuery.carType"
-        placeholder="请选择"
-        style="width: 200px"
-        class="filter-item"
-        clearable
-        @change='selectCarType'
+          v-model="listQuery.carType"
+          placeholder="请选择"
+          style="width: 200px"
+          class="filter-item"
+          clearable
+          @change='selectCarType'
       >
         <el-option
-          v-for="item in carType_Options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+            v-for="item in carType_Options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
         />
       </el-select>
       <span> 车号：</span>
       <el-select
-        v-model="listQuery.trackNo"
-        placeholder="请选择"
-        style="width: 200px"
-        class="filter-item"
-        clearable
+          v-model="listQuery.trackNo"
+          placeholder="请选择"
+          style="width: 200px"
+          class="filter-item"
+          clearable
       >
         <el-option
-          v-for="item in trackNo_Options"
-          :key="item"
-          :label="item"
-          :value="item"
+            v-for="item in trackNo_Options"
+            :key="item"
+            :label="item"
+            :value="item"
         />
       </el-select>
       <el-button
 
-        class="filter-item"
-        style="margin-left: 10px"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFilter"
+          class="filter-item"
+          style="margin-left: 10px"
+          type="primary"
+          icon="el-icon-search"
+          @click="handleFilter"
       >
         查询
       </el-button>
       <div style="height: 70%">
         <el-table
-          id="table"
-          :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-          :row-class-name="tableRowClassName">
+            id="table"
+            :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+            :row-class-name="tableRowClassName">
           border
           fit
           highlight-current-row
           style="width: 100%"
           max-height="550"
-        >
+          >
           <!-- ID -->
           <el-table-column label="序号" prop="seq"  align="center" width="70">
             <template slot-scope="scope">
@@ -202,13 +202,13 @@
       </div>
       <div style="height: 10%">
         <el-pagination
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
         />
       </div>
     </el-card>
@@ -312,8 +312,8 @@ export default {
       this.currentPage = val
     },
     getList(){
-        this.listQuery.beginTime = this.listQuery.dateRange[0]
-        this.listQuery.endTime = this.listQuery.dateRange[1]
+      this.listQuery.beginTime = this.listQuery.dateRange[0]
+      this.listQuery.endTime = this.listQuery.dateRange[1]
       getList(this.listQuery).then( resp =>{
         this.list = resp.data
         this.slicelist = this.list.slice(0,10)
@@ -337,7 +337,7 @@ export default {
       }
     },
     handleFilter() {
-        this.getList()
+      this.getList()
     }
   }
 }
