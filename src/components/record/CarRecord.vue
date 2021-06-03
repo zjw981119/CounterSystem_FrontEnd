@@ -19,21 +19,21 @@
         <!-- 车号选择器 -->
         <el-col :span="4">
           <el-select v-model="queryInfo.queryCar" placeholder="选择车号" clearable>
-            <el-option v-for="item in Carnumoptions" :key="item.value" :label="item.label" :value="item.value">
+            <el-option v-for="item in carnumOptions" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-col>
         <!-- 刷卡器选择器 -->
         <el-col :span="4">
           <el-select v-model="queryInfo.queryAddress" placeholder="选择刷卡器编号" clearable>
-            <el-option v-for="item in Addressoptions" :key="item.value" :label="item.label" :value="item.value">
+            <el-option v-for="item in addressOptions" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-col>
         <!-- 挖机选择器 -->
         <el-col :span="4">
           <el-select v-model="queryInfo.queryDigger" placeholder="选择挖机号" clearable>
-            <el-option v-for="item in Diggeroptions" :key="item.value" :label="item.label" :value="item.value">
+            <el-option v-for="item in diggerOptions" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-col>
@@ -60,7 +60,7 @@
         <el-table-column label="物料" prop="material" width="100px">
           <template slot-scope="scope">
             <el-select v-model="scope.row.material" @change="changeMultiMaterial(scope.row.material)" placeholder="">
-              <el-option v-for="item in MaterialOptions" :key="item.value" :label="item.label" :value="item.value">
+              <el-option v-for="item in materialOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </template>
@@ -81,7 +81,7 @@
         <el-table-column label="车辆状态" prop="isFull" width="100px">
           <template slot-scope="scope">
             <el-select v-model="scope.row.isFull" @change="changeMultiCarLoad(scope.row.isFull)" placeholder="">
-              <el-option v-for="item in CarLoadOptions" :key="item.value" :label="item.label" :value="item.value">
+              <el-option v-for="item in carLoadOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </template>
@@ -147,29 +147,29 @@ export default {
       },
       total: 0,
       carload: '',
-      //车号选择器
-      Carnumoptions: [
+      //运输记录查询车号选择器
+      carnumOptions: [
         {
           value: '',
           label: '',
         },
       ],
       //刷卡器选择器
-      Addressoptions: [
+      addressOptions: [
         {
           value: '',
           label: '',
         },
       ],
       //挖机选择器
-      Diggeroptions: [
+      diggerOptions: [
         {
           value: '',
           label: '',
         },
       ],
       //物料选择器的数据
-      MaterialOptions: [
+      materialOptions: [
         {
           value: '硬土',
           label: '硬土',
@@ -185,7 +185,7 @@ export default {
       ],
 
       //车载选择器的数据
-      CarLoadOptions: [
+      carLoadOptions: [
         {
           value: '-1',
           label: '满车',
@@ -211,9 +211,9 @@ export default {
     async getSelection() {
       var that = this
       //清空前端选择器
-      this.Carnumoptions = new Array()
-      this.Addressoptions = new Array()
-      this.Diggeroptions = new Array()
+      this.carnumOptions = new Array()
+      this.addressOptions = new Array()
+      this.diggerOptions = new Array()
       //清空日期时不请求数据
       if (this.timevalue == 0 || this.timevalue == null) {
         return
@@ -227,37 +227,37 @@ export default {
       }
       this.selectionlist = res.data
       //车号选择器赋值
-      this.Carnumoptions.pop()
+      this.carnumOptions.pop()
       for (
         let index = 0;
         index < this.selectionlist.carnumSelection.length;
         index++
       ) {
-        this.Carnumoptions.push({
+        this.carnumOptions.push({
           value: this.selectionlist.carnumSelection[index],
           label: this.selectionlist.carnumSelection[index],
         })
       }
       //刷卡选择器赋值
-      this.Addressoptions.pop()
+      this.addressOptions.pop()
       for (
         let index = 0;
         index < this.selectionlist.addressSelection.length;
         index++
       ) {
-        this.Addressoptions.push({
+        this.addressOptions.push({
           value: this.selectionlist.addressSelection[index],
           label: this.selectionlist.addressSelection[index],
         })
       }
       //挖机选择器赋值
-      this.Diggeroptions.pop()
+      this.diggerOptions.pop()
       for (
         let index = 0;
         index < this.selectionlist.diggerSelection.length;
         index++
       ) {
-        this.Diggeroptions.push({
+        this.diggerOptions.push({
           value: this.selectionlist.diggerSelection[index],
           label: this.selectionlist.diggerSelection[index],
         })

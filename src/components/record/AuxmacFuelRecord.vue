@@ -26,6 +26,7 @@
         <el-table-column label="辅助车号" prop="AuxcarNum"></el-table-column>
         <el-table-column label="车型" prop="carType"></el-table-column>
         <el-table-column label="油卡编号" prop="oilCard"></el-table-column>
+        <el-table-column label="加油时间" prop="addTime" width="200px"></el-table-column>
         <el-table-column label="加油升数" prop="oilVolume"></el-table-column>
         <el-table-column label="油品单价" prop="initPrice"></el-table-column>
         <el-table-column label="金额" prop="totalPrice"></el-table-column>
@@ -52,36 +53,43 @@ export default {
           AuxcarNum: '1号',
           oilCard: '7283801',
           oilVolume: '5',
+          addTime: '2021-05-08 15:54:36',
         },
         {
           AuxcarNum: '2号',
           oilCard: '7283803',
           oilVolume: '6',
+          addTime: '2021-05-11 17:57:05',
         },
         {
           AuxcarNum: '3号',
           oilCard: '7283805',
           oilVolume: '7',
+          addTime: '2021-05-13 09:44:23',
         },
         {
           AuxcarNum: '4号',
           oilCard: '7283807',
           oilVolume: '6',
+          addTime: '2021-05-14 11:46:55',
         },
         {
           AuxcarNum: '5号',
           oilCard: '7283809',
           oilVolume: '6',
+          addTime: '2021-05-14 13:24:41',
         },
         {
           AuxcarNum: '6号',
           oilCard: '7283811',
           oilVolume: '5',
+          addTime: '2021-05-14 17:13:19',
         },
         {
           AuxcarNum: '7号',
           oilCard: '7283813',
           oilVolume: '6',
+          addTime: '2021-05-14 19:18:37',
         },
       ],
       //辅助车辆配置表
@@ -128,6 +136,7 @@ export default {
               AuxcarNum: this.AuxcarConfiglist[i].carId,
               carType: this.AuxcarConfiglist[i].carType,
               oilCard: this.oilAPI[j].oilCard,
+              addTime: this.oilAPI[j].addTime,
               oilVolume: this.oilAPI[j].oilVolume,
               initPrice: this.AuxcarConfiglist[i].price,
               totalPrice:

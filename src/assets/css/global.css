@@ -19,3 +19,8 @@ html,body,#app {
 .el-pagination{
   margin-top: 15px;
 }
+
+/* 表格样式 */
+.el-table th.gutter{
+  display: table-cell !important;
+}
