@@ -37,9 +37,14 @@
 </template>
 
 <script>
+//引入全局变量
+import GLOBAL from '@/api/global_variable'
+
 export default {
   data() {
     return {
+      //请求地址
+      baseURL: GLOBAL.baseURL,
       timevalue: '',
       //加油API接口获得的数据
       oilAPI: [
@@ -103,10 +108,10 @@ export default {
   methods: {
     //获取配置信息请求
     async getAuxMacConfig() {
-      this.AuxcarfuelList=new Array()
+      this.AuxcarfuelList = new Array()
       var that = this
       const { data: res } = await this.$http.get(
-        'http://localhost:8083/Server/AuxMachine/getConfig',
+        this.baseURL + 'AuxMachine/getConfig',
         {
           params: { timevalue: this.timevalue },
         }
@@ -125,12 +130,13 @@ export default {
               oilCard: this.oilAPI[j].oilCard,
               oilVolume: this.oilAPI[j].oilVolume,
               initPrice: this.AuxcarConfiglist[i].price,
-              totalPrice: this.oilAPI[j].oilVolume * this.AuxcarConfiglist[i].price,
+              totalPrice:
+                this.oilAPI[j].oilVolume * this.AuxcarConfiglist[i].price,
             })
           }
         }
       }
-      
+
       console.log(this.AuxcarConfiglist)
     },
   },

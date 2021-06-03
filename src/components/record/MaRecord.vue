@@ -4,7 +4,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>展示</el-breadcrumb-item>
-      <el-breadcrumb-item>车辆运输统计</el-breadcrumb-item>
+      <el-breadcrumb-item>统计表</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!-- 卡片视图 -->
@@ -30,14 +30,14 @@
             style="margin-left: 10px;margin-top: 20px"
             type="primary"
             icon="el-icon-search"
-            @click="search1"
+            @click="search"
         >
           查询
         </el-button>
       </el-row>
 
       <!-- 统计数据区域 -->
-      <el-table :data="countslist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="tableRowStyleName" width=100%  >
+      <el-table :data="countslist1" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="tableRowStyleName" width=100%  >
         <el-table-column type="index" label="#" width="50" ></el-table-column>
         <el-table-column label="车型" prop="car_type" width="60px" ></el-table-column>
         <el-table-column label="车号" prop="car_no" width="60px"></el-table-column>
@@ -76,12 +76,12 @@ export default {
   data() {
 
     return {
-     value1:'',
+      value1:'',
       value2:'',
       value:'',
 
 
-      countslist: [],
+      countslist1: [],
 
 
     }
@@ -95,8 +95,8 @@ export default {
         return 'background-color: #19CAAD !important;';
       }
     },
-    search1() {
-      axios.post('http://localhost:8083/Server/warn/findAll',
+    search() {
+      axios.post('http://localhost:8083/Server/wa/findAll',
           {
 
             value1: this.value == null ? null : this.value[0],
@@ -104,8 +104,8 @@ export default {
 
           }).then(res => {
         if (res.data) {
-          console.log(res.data.data.length)
-          this.countslist = res.data.data
+          console.log(res.data.data)
+          this.countslist1 = res.data.data
           console.log(res.data)
           // this.total = res.data.data.length
         }

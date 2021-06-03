@@ -39,7 +39,7 @@
                 <!-- 图标 -->
                 <i class="el-icon-data-analysis"></i>
                 <!-- 文本 -->
-                <span>机械统计表</span>
+                <span>机械统计表内部</span>
               </template>
             </el-menu-item>
 
@@ -69,6 +69,23 @@
                 <span>车辆统计表</span>
               </template>
             </el-menu-item>
+            <el-menu-item index="/marecord">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>机械统计表外部</span>
+              </template>
+            </el-menu-item>
+            <el-menu-item index="/machinedetail">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>机械明细表</span>
+              </template>
+            </el-menu-item>
+
 
           </el-submenu>
 
