@@ -19,7 +19,7 @@ export function deleteDiggerProduction(data){
 
 export function updateDiggerProduction(data){
   return request({
-    url: './diggerProduction/updateDiggerProduction',
+    url: './diggerProduction/editDiggerProduction',
     method: 'post',
     //headers: { 'content-type': 'application/json' },
     data: data

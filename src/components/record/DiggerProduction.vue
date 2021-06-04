@@ -14,8 +14,8 @@
           </el-date-picker>
         </el-col>
         <el-col :span="3">
-          <el-select v-model="this.diggerNo" placeholder="请选择挖机">
-            <el-option v-for="item in diggerNoOptions" :key="item" :label="item" :value="item">
+          <el-select v-model="diggerNo" placeholder="请选择挖机">
+            <el-option v-for="item in optionDiggers" :key="item" :label="item" :value="item">
             </el-option>
           </el-select>
         </el-col>
@@ -29,7 +29,7 @@
         </el-col>
         <!-- 修改按钮 -->
         <el-col :span="2">
-          <el-button icon="el-icon-search" type="primary" @click="editData = true">上传</el-button>
+          <el-button icon="el-icon-search" type="primary" @click="editData">上传</el-button>
         </el-col>
       </el-row>
 
@@ -299,20 +299,20 @@ export default {
     },
 
     addDiggerProduction() {
-      this.resetTempProduction()
       for (let i = 0; i < this.checkedDiggers.length; i++) {
         for (let j = 0; j < this.diggerConfigList.length; j++) {
-          if(this.checkedDiggers[i]===this.diggerConfigList[i].carId){
-            this.tempDiggerProduction.carId=this.diggerConfigList[i].carId
-            this.tempDiggerProduction.carType=this.diggerConfigList[i].carType
-            this.tempDiggerProduction.type=this.diggerConfigList[i].type
-            this.tempDiggerProduction.ownerName=this.diggerConfigList[i].ownerName
-            this.tempDiggerProduction.beilv=this.diggerConfigList[i].ratio
+          if(this.checkedDiggers[i]===this.diggerConfigList[j].carId){
+            this.tempDiggerProduction.carId=this.diggerConfigList[j].carId
+            this.tempDiggerProduction.carType=this.diggerConfigList[j].carType
+            this.tempDiggerProduction.type=this.diggerConfigList[j].type
+            this.tempDiggerProduction.ownerName=this.diggerConfigList[j].ownerName
+            this.tempDiggerProduction.beilv=this.diggerConfigList[j].ratio
             this.tempDiggerProduction.date=parseTime(this.dateValue,"{y}-{m}-{d}")
             break
           }
         }
-        this.diggerProductionList.push(this.tempDiggerProduction)
+        //需要把json转为字符串再转为json对象才可以存进LIst，否则在其他地方改变了json对象,List里面的也会改变
+        this.diggerProductionList.push(JSON.parse(JSON.stringify(this.tempDiggerProduction)))
         //this.resetTempProduction()
       }
       this.addDialogVisible=false
