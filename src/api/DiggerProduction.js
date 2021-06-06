@@ -25,3 +25,12 @@ export function updateDiggerProduction(data){
     data: data
   })
 }
+
+export function addDiggerProduction(data){
+  return request({
+    url: './diggerProduction/addDiggerProduction',
+    method: 'post',
+    //headers: { 'content-type': 'application/json' },
+    data: data
+  })
+}

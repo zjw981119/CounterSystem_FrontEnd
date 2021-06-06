@@ -14,7 +14,7 @@
           </el-date-picker>
         </el-col>
         <el-col :span="3">
-          <el-select v-model="diggerNo" placeholder="请选择挖机">
+          <el-select v-model="diggerNo" placeholder="请选择挖机" :clearable=true>
             <el-option v-for="item in optionDiggers" :key="item" :label="item" :value="item">
             </el-option>
           </el-select>
@@ -113,10 +113,6 @@
 
         <el-table-column label="操作" width="100px" fixed="right">
           <template slot-scope="scope">
-            <!-- 修改按钮 -->
-<!--            <el-tooltip effect="dark" content="新增配置信息" placement="top" :enterable="false">-->
-<!--              <el-button type="primary" icon="el-icon-edit" size="mini" @click="editDiggerProduction(scope.row)"></el-button>-->
-<!--            </el-tooltip>-->
             <!-- 删除按钮 -->
             <el-tooltip effect="dark" content="删除配置信息" placement="top" :enterable="false">
               <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeDiggerProductionById(scope.row)"></el-button>
@@ -140,59 +136,59 @@
       </span>
     </el-dialog>
     <!-- 修改挖机生产情况的对话框 -->
-    <el-dialog title="修改挖机生产信息" :visible.sync="editDialogVisible" width="30%" @close="editDialogVisible = false">
-      <el-form ref="editFormRef" :model="tempDiggerProduction" :rules="editFormRules" label-width="80px">
-        <el-form-item label="车号" prop="carId">
-          <el-input v-model="tempDiggerProduction.carId" ></el-input>
-        </el-form-item>
-        <el-form-item label="车型" prop="carType">
-          <el-input v-model="tempDiggerProduction.carType"></el-input>
-        </el-form-item>
-        <el-form-item label="内部/外部" prop="type">
-          <el-input v-model="tempDiggerProduction.type"></el-input>
-        </el-form-item>
-        <el-form-item label="车主" prop="ownerName">
-          <el-input v-model="tempDiggerProduction.ownerName"></el-input>
-        </el-form-item>
-        <el-form-item label="车数" prop="num">
-          <el-input v-model="tempDiggerProduction.num"></el-input>
-        </el-form-item>
-        <el-form-item label="倍率" prop="beilv">
-          <el-input v-model="tempDiggerProduction.beilv"></el-input>
-        </el-form-item>
-        <el-form-item label="物料" prop="wuliao">
-          <el-input v-model="tempDiggerProduction.wuliao"></el-input>
-        </el-form-item>
-        <el-form-item label="挖机单价" prop="wajidanjia">
-          <el-input v-model="tempDiggerProduction.wajidanjia"></el-input>
-        </el-form-item>
-        <el-form-item label="计时时间" prop="jishishijian">
-          <el-input v-model="tempDiggerProduction.jishishijian"></el-input>
-        </el-form-item>
-        <el-form-item label="计时单价" prop="jishidanjia">
-          <el-input v-model="tempDiggerProduction.jishidanjia"></el-input>
-        </el-form-item>
-        <el-form-item label="装煤车数" prop="zhuangmeiche">
-          <el-input v-model="tempDiggerProduction.zhuangmeiche"></el-input>
-        </el-form-item>
-        <el-form-item label="装煤单价" prop="zhuangmeidanjia">
-          <el-input v-model="tempDiggerProduction.zhuangmeidanjia"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editDiggerProduction">确 定</el-button>
-      </span>
-    </el-dialog>
+<!--    <el-dialog title="修改挖机生产信息" :visible.sync="editDialogVisible" width="30%" @close="editDialogVisible = false">-->
+<!--      <el-form ref="editFormRef" :model="tempDiggerProduction" :rules="editFormRules" label-width="80px">-->
+<!--        <el-form-item label="车号" prop="carId">-->
+<!--          <el-input v-model="tempDiggerProduction.carId" ></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="车型" prop="carType">-->
+<!--          <el-input v-model="tempDiggerProduction.carType"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="内部/外部" prop="type">-->
+<!--          <el-input v-model="tempDiggerProduction.type"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="车主" prop="ownerName">-->
+<!--          <el-input v-model="tempDiggerProduction.ownerName"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="车数" prop="num">-->
+<!--          <el-input v-model="tempDiggerProduction.num"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="倍率" prop="beilv">-->
+<!--          <el-input v-model="tempDiggerProduction.beilv"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="物料" prop="wuliao">-->
+<!--          <el-input v-model="tempDiggerProduction.wuliao"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="挖机单价" prop="wajidanjia">-->
+<!--          <el-input v-model="tempDiggerProduction.wajidanjia"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="计时时间" prop="jishishijian">-->
+<!--          <el-input v-model="tempDiggerProduction.jishishijian"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="计时单价" prop="jishidanjia">-->
+<!--          <el-input v-model="tempDiggerProduction.jishidanjia"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="装煤车数" prop="zhuangmeiche">-->
+<!--          <el-input v-model="tempDiggerProduction.zhuangmeiche"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="装煤单价" prop="zhuangmeidanjia">-->
+<!--          <el-input v-model="tempDiggerProduction.zhuangmeidanjia"></el-input>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="editDialogVisible = false">取 消</el-button>-->
+<!--        <el-button type="primary" @click="editDiggerProduction">确 定</el-button>-->
+<!--      </span>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 
 <script>
 import {
-  updateDiggerProduction,
+  updateDiggerProduction,addDiggerProduction,
   queryConditionalProduction, deleteDiggerProduction
 } from '../../api/DiggerProduction'
-import { queryConditionalConfig } from '../../api/DiggerConfig'
+import { latestDiggerConfig } from '../../api/DiggerConfig'
 import { parseTime } from '../../utils/time-util'
 
 export default {
@@ -254,21 +250,7 @@ export default {
           label: '外部',
         },
       ],
-      editFormRules: {
-        carId: [
-          { required: true, message: '请输入车号', trigger: 'blur' },
-          // { validator: checkRfid, trigger: 'blur' },
-          //{ min: 8, max: 8, message: 'rfid卡号为8位数字', trigger: 'blur' },
-        ],
-        // carnum: [
-        //   { required: true, message: '请输入车号', trigger: 'blur' },
-        //   //{ validator: checkCarnum, trigger: 'blur' },
-        // ],
-        // address: [
-        //   { required: true, message: '请输入矿车地址', trigger: 'blur' },
-        //   { min: 4, max: 8, message: '请输入合法的矿车地址', trigger: 'blur' },
-        // ],
-      },
+      diggerProductionListInsert: []
     }
   },
   created() {
@@ -280,7 +262,7 @@ export default {
   methods:{
     //条件查询挖机配置表
     getDiggerConfigList() {
-      queryConditionalConfig(this.$qs.stringify({date:parseTime(this.dateValue,"{y}-{m}-{d}")})).then(resp => {
+      latestDiggerConfig().then(resp => {
         this.diggerConfigList=resp.data
         for (let i = 0; i < resp.data.length; i++) {
           this.optionDiggers.push(resp.data[i].carId)
@@ -312,19 +294,18 @@ export default {
           }
         }
         //需要把json转为字符串再转为json对象才可以存进LIst，否则在其他地方改变了json对象,List里面的也会改变
-        this.diggerProductionList.push(JSON.parse(JSON.stringify(this.tempDiggerProduction)))
+        this.diggerProductionListInsert.push(JSON.parse(JSON.stringify(this.tempDiggerProduction)))
         //this.resetTempProduction()
       }
       this.addDialogVisible=false
-      // addDiggerProduction(this.tempDiggerProductionArray).then(resp=>{
-      //   this.getList()
-      //   if (resp.result.code == '20000') {
-      //     return this.$message.success('添加挖机生产信息成功')
-      //   }
-      //
-      // }).catch(error=>{
-      //   console.log(error)
-      // })
+      addDiggerProduction(this.diggerProductionListInsert).then(resp=>{
+        this.getList()
+        if (resp.result.code == '20000') {
+          return this.$message.success('添加挖机生产信息成功')
+        }
+      }).catch(error=>{
+        console.log(error)
+      })
     },
     async editData() {
       //清空列表
@@ -380,25 +361,18 @@ export default {
 
       //如果用户确认删除，则返回值为字符串confirm
       //如果用户取消删除，则返回值为字符串cancel
-      //console.log(confirmResult)
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
 
-      //如果是新增的空数据，则直接删除前端列表中的对象
-      if (config.id == '') {
-        this.diggerProductionList.pop()
-      } else {
-        // 若存在id,则像后端发送请求，对数据库进行删除操作
-        deleteDiggerProduction(config.id).then(resp=>{
-          this.getList()
-          if (resp.result.code == '20000') {
-            return this.$message.success('删除配置信息成功')
-          }
-        }).catch(error =>{
-          console.log(error)
-        })
-      }
+      deleteDiggerProduction(config.id).then(resp=>{
+        this.getList()
+        if (resp.result.code == '20000') {
+          return this.$message.success('删除配置信息成功')
+        }
+      }).catch(error =>{
+        console.log(error)
+      })
     },
     //清空数据生产json数据
     resetTempProduction(){
