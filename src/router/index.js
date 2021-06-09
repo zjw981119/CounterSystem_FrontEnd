@@ -6,6 +6,7 @@ import Welcome from '../components/Welcome.vue'
 import AuxmacFuelRecord from '../components/record/AuxmacFuelRecord.vue'
 import MacRecord from '../components/record/MacRecord.vue'
 import DiggerProduction from '../components/record/DiggerProduction.vue'
+import DiggerFuel from '../components/record/DiggerFuel.vue'
 import CarFuel from '../components/record/CarFuel.vue'
 import CarRecord from '../components/record/CarRecord.vue'
 import Statistics from '../components/record/Statistics.vue'
@@ -13,8 +14,8 @@ import DiggerConfig from '../components/config/DiggerConfig.vue'
 import CarConfig from '../components/config/CarConfig.vue'
 import AuxMacConfig from '../components/config/AuxiliaryMacConfig.vue'
 import RfidConfig from '../components/config/RfidCarConfig.vue'
+import MaRecord from '../components/record/MaRecord.vue'
 import MachineDetail from '@/components/record/MachineDetail'
-
 
 // 安装路由模块
 Vue.use(Router)
@@ -32,6 +33,7 @@ const router = new Router({
         { path: '/auxfuelrecord', component: AuxmacFuelRecord },
         { path: '/macrecord', component: MacRecord },
         { path: '/diggerproduction', component: DiggerProduction },
+        { path: '/diggerfuel', component: DiggerFuel },
         { path: '/carfuel', component: CarFuel },
         { path: '/carrecord', component: CarRecord },
         { path: '/statistics', component: Statistics },
@@ -39,6 +41,7 @@ const router = new Router({
         { path: '/carconfig', component: CarConfig },
         { path: '/auxmacconfig', component: AuxMacConfig },
         { path: '/rfidconfig', component: RfidConfig },
+        { path: '/marecord', component: MaRecord },
         { path: '/machinedetail', component: MachineDetail },
       ]
     }

@@ -1,10 +1,31 @@
 import request from '@/utils/request'
 
-export function queryConditional(data){
+export function queryConditionalConfig(data){
   return request({
     url: './diggerConfig/queryConditional',
     method: 'post',
-    //headers: { 'content-type': 'application/json' },
     data: data,
+  })
+}
+
+export function delDiggerConfig(data){
+  return request({
+    url: './diggerConfig/delDiggerConfigById'+"/"+data,
+    method: 'post',
+  })
+}
+
+export function editDiggerConfig(data){
+  return request({
+    url: './diggerConfig/editDiggerConfig',
+    method: 'post',
+    data: data
+  })
+}
+
+export function latestDiggerConfig(){
+  return request({
+    url: './diggerConfig/latestDiggerConfigData',
+    method: 'post',
   })
 }

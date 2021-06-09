@@ -28,9 +28,13 @@
       <!-- 配置列表区域 class="rule-input" -->
       <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="520">
         <el-table-column type="index" label="#" fixed="left"></el-table-column>
+
         <el-table-column label="车号" prop="carNum" width="100px">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.carNum"></el-input>
+            <el-select v-model="scope.row.carNum">
+              <el-option v-for="item in carNumOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
           </template>
         </el-table-column>
 
@@ -43,7 +47,7 @@
         <el-table-column label="内部/外部" prop="place" width='100px'>
           <template slot-scope="scope">
             <el-select v-model="scope.row.place" placeholder="">
-              <el-option v-for="item in PlaceOptions" :key="item.value" :label="item.label" :value="item.value">
+              <el-option v-for="item in placeOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </template>
@@ -117,9 +121,9 @@
 
         <el-table-column label="操作" width="150px" fixed="right">
           <template slot-scope="scope">
-            <!-- 修改按钮 -->
+            <!-- 添加按钮 -->
             <el-tooltip effect="dark" content="新增配置信息" placement="top" :enterable="false">
-              <el-button type="primary" icon="el-icon-edit" size="mini" @click="addConfig"></el-button>
+              <el-button type="primary" icon="el-icon-plus" size="mini" @click="addConfig"></el-button>
             </el-tooltip>
             <!-- 删除按钮 -->
             <el-tooltip effect="dark" content="删除配置信息" placement="top" :enterable="false">
@@ -164,8 +168,14 @@ export default {
         },
       ],
 
+      //车号数组
+      carNumSelection: [],
+
+      //车号选择器
+      carNumOptions: [],
+
       //物料选择器的数据
-      PlaceOptions: [
+      placeOptions: [
         {
           value: '内部',
           label: '内部',
@@ -187,7 +197,7 @@ export default {
     }
   },
 
-  //自动获取当前日期的数据
+  //自动获取当前日期的数据,并获取RFID配置表中全部车号
   created() {
     const date = new Date()
     const nowdate = {
@@ -199,7 +209,10 @@ export default {
     const newday = nowdate.day > 10 ? nowdate.day : '0' + nowdate.day
     this.timevalue = nowdate.year + '-' + newmonth + '-' + newday
     //console.log(this.timevalue)
+    //获取车辆配置信息
     this.getCarConfig()
+    //获取RFID配置表中全部车号
+    this.getCarNum()
   },
 
   methods: {
@@ -283,6 +296,33 @@ export default {
         this.addConfig()
       }
       console.log(res.data)
+    },
+
+    //获取RFID配置表中的全部车号
+    async getCarNum() {
+      var that = this
+      //清空选择器数据
+      this.carNumOptions = new Array()
+      const { data: res } = await this.$http.get(
+        //this.baseURL + 'Carconfig/getCarNum',
+        this.baseURL +'Carconfig/getCarNum',
+        {
+          params: { address: 'PANH' },
+        }
+      )
+      if (res.result.code !== '20000') {
+        return that.$message.error('获取车号配置信息失败')
+      }
+      this.carNumSelection = res.data
+      console.log(this.carNumSelection)
+      //车号选择器赋值
+      this.carNumOptions.pop()
+      for (let index = 0; index < this.carNumSelection.length; index++) {
+        this.carNumOptions.push({
+          value: this.carNumSelection[index],
+          label: this.carNumSelection[index],
+        })
+      }
     },
 
     //监听上传数据按钮
