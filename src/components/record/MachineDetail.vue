@@ -6,7 +6,11 @@
       <el-breadcrumb-item>计数展示</el-breadcrumb-item>
       <el-breadcrumb-item>机械明细表</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card>
+    <el-card
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)">
     <span>生效时间：</span>
       <el-date-picker
         v-model="listQuery.dateRange"
@@ -65,7 +69,7 @@
         <el-table
           id="table"
           :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-          :row-class-name="tableRowClassName">
+          :row-class-name="tableRowClassName"
           border
           fit
           highlight-current-row
@@ -222,6 +226,7 @@ export default {
   name: 'MachineDetail',
   data() {
     return {
+      loading: true,
       currentPage: 1,
       pageSize: 10,
       list: null,
@@ -320,6 +325,7 @@ export default {
         console.log("list===",this.slicelist)
         this.total = resp.data.length
       })
+      this.loading = false
     },
     getExcavatorAndCar(){
       getExcavatorAndCar().then( resp =>{
