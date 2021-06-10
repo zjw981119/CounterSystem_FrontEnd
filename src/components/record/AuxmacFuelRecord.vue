@@ -107,8 +107,8 @@ export default {
       month: date.getMonth() + 1,
       day: date.getDate(),
     }
-    const newmonth = nowdate.month > 10 ? nowdate.month : '0' + nowdate.month
-    const newday = nowdate.day > 10 ? nowdate.day : '0' + nowdate.day
+    const newmonth = nowdate.month > 9 ? nowdate.month : '0' + nowdate.month
+    const newday = nowdate.day > 9 ? nowdate.day : '0' + nowdate.day
     this.timevalue = nowdate.year + '-' + newmonth + '-' + newday
     //console.log(this.timevalue)
     this.getAuxMacConfig()

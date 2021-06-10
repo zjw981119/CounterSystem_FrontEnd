@@ -29,9 +29,9 @@
       <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="740">
         <el-table-column type="index" label="#" fixed="left"></el-table-column>
 
-        <el-table-column label="车号" prop="carNum" width="100px">
+        <el-table-column label="车号" prop="carId" width="100px">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.carNum">
+            <el-select v-model="scope.row.carId">
               <el-option v-for="item in carNumOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
@@ -44,18 +44,18 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="内部/外部" prop="place" width='100px'>
+        <el-table-column label="内部/外部" prop="type" width='100px'>
           <template slot-scope="scope">
-            <el-select v-model="scope.row.place" placeholder="">
+            <el-select v-model="scope.row.type" placeholder="">
               <el-option v-for="item in placeOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </template>
         </el-table-column>
 
-        <el-table-column label="绑定挖机" prop="grabCar" width='100px'>
+        <el-table-column label="绑定挖机" prop="bindExcavator" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.grabCar"></el-input>
+            <el-input v-model="scope.row.bindExcavator"></el-input>
           </template>
         </el-table-column>
 
@@ -65,21 +65,21 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="油品单价" prop="initPrice" width='100px'>
+        <el-table-column label="油品单价" prop="oilPrice" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.initPrice"></el-input>
+            <el-input v-model="scope.row.oilPrice"></el-input>
           </template>
         </el-table-column>
 
-        <el-table-column label="方量(倍率)" prop="volume" width='100px'>
+        <el-table-column label="方量(倍率)" prop="multiple" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.volume"></el-input>
+            <el-input v-model="scope.row.multiple"></el-input>
           </template>
         </el-table-column>
 
-        <el-table-column label="标箱量" prop="teu" width='100px'>
+        <el-table-column label="标箱量" prop="biaoxiang" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.teu"></el-input>
+            <el-input v-model="scope.row.biaoxiang"></el-input>
           </template>
         </el-table-column>
 
@@ -89,33 +89,33 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="修理费" prop="repairCost" width='100px'>
+        <el-table-column label="修理费" prop="maintenanceFee" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.repairCost"></el-input>
+            <el-input v-model="scope.row.maintenanceFee"></el-input>
           </template>
         </el-table-column>
 
-        <el-table-column label="伙食费" prop="foodCost" width='100px'>
+        <el-table-column label="伙食费" prop="mealFee" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.foodCost"></el-input>
+            <el-input v-model="scope.row.mealFee"></el-input>
           </template>
         </el-table-column>
 
-        <el-table-column label="配件费" prop="fittingsCost" width='100px'>
+        <el-table-column label="配件费" prop="accessoryFee" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.fittingsCost"></el-input>
+            <el-input v-model="scope.row.accessoryFee"></el-input>
           </template>
         </el-table-column>
 
-        <el-table-column label="罚款" prop="fine" width='100px'>
+        <el-table-column label="罚款" prop="penalty" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.fine"></el-input>
+            <el-input v-model="scope.row.penalty"></el-input>
           </template>
         </el-table-column>
 
-        <el-table-column label="奖金" prop="bonus" width='100px'>
+        <el-table-column label="奖金" prop="reward" width='100px'>
           <template slot-scope="scope">
-            <el-input v-model="scope.row.bonus"></el-input>
+            <el-input v-model="scope.row.reward"></el-input>
           </template>
         </el-table-column>
 
@@ -151,20 +151,20 @@ export default {
 
       configlist: [
         {
-          carNum: '',
+          carId: '',
           carType: '',
-          place: '',
-          grabCar: '',
+          type: '',
+          bindExcavator: '',
           ownerName: '',
-          initPrice: '',
-          volume: '',
-          teu: '',
+          oilPrice: '',
+          multiple: '',
+          biaoxiang: '',
           salary: '',
-          repairCost: '',
-          foodCost: '',
-          fittingsCost: '',
-          fine: '',
-          bonus: '',
+          maintenanceFee: '',
+          mealFee: '',
+          accessoryFee: '',
+          penalty: '',
+          reward: '',
         },
       ],
 
@@ -205,8 +205,8 @@ export default {
       month: date.getMonth() + 1,
       day: date.getDate(),
     }
-    const newmonth = nowdate.month > 10 ? nowdate.month : '0' + nowdate.month
-    const newday = nowdate.day > 10 ? nowdate.day : '0' + nowdate.day
+    const newmonth = nowdate.month > 9 ? nowdate.month : '0' + nowdate.month
+    const newday = nowdate.day > 9 ? nowdate.day : '0' + nowdate.day
     this.timevalue = nowdate.year + '-' + newmonth + '-' + newday
     //console.log(this.timevalue)
     //获取车辆配置信息
