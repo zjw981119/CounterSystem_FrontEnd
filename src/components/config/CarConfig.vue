@@ -26,7 +26,7 @@
         </el-col>
       </el-row>
       <!-- 配置列表区域 class="rule-input" -->
-      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="520">
+      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="740">
         <el-table-column type="index" label="#" fixed="left"></el-table-column>
 
         <el-table-column label="车号" prop="carNum" width="100px">

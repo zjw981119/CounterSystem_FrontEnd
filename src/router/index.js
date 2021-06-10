@@ -9,7 +9,6 @@ import DiggerProduction from '../components/record/DiggerProduction.vue'
 import DiggerFuel from '../components/record/DiggerFuel.vue'
 import CarFuel from '../components/record/CarFuel.vue'
 import CarRecord from '../components/record/CarRecord.vue'
-import Statistics from '../components/record/Statistics.vue'
 import DiggerConfig from '../components/config/DiggerConfig.vue'
 import CarConfig from '../components/config/CarConfig.vue'
 import AuxMacConfig from '../components/config/AuxiliaryMacConfig.vue'
@@ -36,7 +35,6 @@ const router = new Router({
         { path: '/diggerfuel', component: DiggerFuel },
         { path: '/carfuel', component: CarFuel },
         { path: '/carrecord', component: CarRecord },
-        { path: '/statistics', component: Statistics },
         { path: '/diggerconfig', component: DiggerConfig },
         { path: '/carconfig', component: CarConfig },
         { path: '/auxmacconfig', component: AuxMacConfig },

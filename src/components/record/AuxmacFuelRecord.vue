@@ -22,7 +22,7 @@
       </el-row>
 
       <!-- 配置列表区域 -->
-      <el-table :data="AuxcarfuelList" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="480">
+      <el-table :data="AuxcarfuelList" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="740">
         <el-table-column label="辅助车号" prop="AuxcarNum"></el-table-column>
         <el-table-column label="车型" prop="carType"></el-table-column>
         <el-table-column label="油卡编号" prop="oilCard"></el-table-column>

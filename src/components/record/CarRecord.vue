@@ -48,7 +48,7 @@
       </el-row>
 
       <!-- 展示工作记录区域 recordlist-->
-      <el-table ref="multipleTable" :data="recordlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="480" style="width: 100%">
+      <el-table ref="multipleTable" :data="recordlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="700" style="width: 100%">
         <el-table-column type="selection" width="55" fixed="left"></el-table-column>
         <el-table-column type="index" label="#" fixed="left"></el-table-column>
         <el-table-column label="计数宝编号" prop="address" width="120px"></el-table-column>
@@ -123,7 +123,8 @@ export default {
       //请求地址
       baseURL: GLOBAL.baseURL,
       img_url: 'http://222.74.94.190:8093/Server/file/showImage/',
-
+      //img_url: 'http://222.74.94.190:8093/Server/file/showImage/',
+      //img_url:'http://localhost:8083/Server/file/showImage/'
       timevalue: '',
       isShow: false,
       //查询请求对象
@@ -468,6 +469,7 @@ export default {
         return that.$message.error('修改数据失败')
       }
       that.$message.success('修改数据成功')
+      this.getRecordData()
     },
   },
 }
