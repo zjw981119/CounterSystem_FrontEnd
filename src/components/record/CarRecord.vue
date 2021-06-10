@@ -57,24 +57,24 @@
         <el-table-column label="刷卡时间" prop="time" sortable width="200px"></el-table-column>
         <el-table-column label="车数" prop="degree"></el-table-column>
         <!-- 物料选择器 -->
-        <el-table-column label="物料" prop="material" width="100px">
+        <el-table-column label="物料" prop="wuliaoType" width="100px">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.material" @change="changeMultiMaterial(scope.row.material)" placeholder="">
+            <el-select v-model="scope.row.wuliaoType" @change="changeMultiMaterial(scope.row.wuliaoType)" placeholder="">
               <el-option v-for="item in materialOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </template>
         </el-table-column>
 
-        <el-table-column label="运距" prop="distance" width="100px">
+        <el-table-column label="运距" prop="transportDistance" width="100px">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.distance" @change="changeMultiDistance(scope.row.distance)" clearable></el-input>
+            <el-input v-model="scope.row.transportDistance" @change="changeMultiDistance(scope.row.transportDistance)" clearable></el-input>
           </template>
         </el-table-column>
 
-        <el-table-column label="单价" prop="price" width="100px">
+        <el-table-column label="单价" prop="unitPrice" width="100px">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.price" @change="changeMultiPrice(scope.row.price)" clearable></el-input>
+            <el-input v-model="scope.row.unitPrice" @change="changeMultiPrice(scope.row.unitPrice)" clearable></el-input>
           </template>
         </el-table-column>
         <!-- 车载选择器 -->
@@ -87,9 +87,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="特殊情况加车数" prop="additionalCount">
+        <el-table-column label="特殊情况加车数" prop="addcarParticular">
           <template slot-scope="scope">
-            <el-input v-model="scope.row.additionalCount" clearable></el-input>
+            <el-input v-model="scope.row.addcarParticular" clearable></el-input>
           </template>
         </el-table-column>
 
@@ -327,7 +327,7 @@ export default {
           index < this.$refs.multipleTable.selection.length;
           index++
         ) {
-          this.$refs.multipleTable.selection[index].price = newPrice
+          this.$refs.multipleTable.selection[index].unitPrice = newPrice
         }
       }
     },
@@ -345,25 +345,7 @@ export default {
           index < this.$refs.multipleTable.selection.length;
           index++
         ) {
-          this.$refs.multipleTable.selection[index].distance = newDistance
-        }
-      }
-    },
-
-    //监听特殊情况加车数输入框改变的事件
-    changeMultiRemark(newRemark) {
-      //console.log(newPrice)
-      var length = this.$refs.multipleTable.selection.length
-      //若没有使用多选框，则直接返回
-      if (length == 0) return
-      //使用多选框，则修改所有选中行的价格
-      else {
-        for (
-          let index = 0;
-          index < this.$refs.multipleTable.selection.length;
-          index++
-        ) {
-          this.$refs.multipleTable.selection[index].remark = newRemark
+          this.$refs.multipleTable.selection[index].transportDistance = newDistance
         }
       }
     },
@@ -381,7 +363,7 @@ export default {
           index < this.$refs.multipleTable.selection.length;
           index++
         ) {
-          this.$refs.multipleTable.selection[index].material = newMaterial
+          this.$refs.multipleTable.selection[index].wuliaoType = newMaterial
         }
       }
     },
@@ -436,11 +418,11 @@ export default {
         for (let index = 0; index < recordLength; index++) {
           this.updatelist.push({
             id: this.recordlist[index].id,
-            material: this.recordlist[index].material,
-            distance: this.recordlist[index].distance,
-            price: this.recordlist[index].price,
+            wuliaoType: this.recordlist[index].wuliaoType,
+            transportDistance: this.recordlist[index].transportDistance,
+            unitPrice: this.recordlist[index].unitPrice,
             isFull: this.recordlist[index].isFull,
-            additionalCount: this.recordlist[index].additionalCount,
+            addcarParticular: this.recordlist[index].addcarParticular,
           })
         }
       }
@@ -450,12 +432,12 @@ export default {
         for (let index = 0; index < selectionLength; index++) {
           this.updatelist.push({
             id: this.$refs.multipleTable.selection[index].id,
-            material: this.$refs.multipleTable.selection[index].material,
-            distance: this.$refs.multipleTable.selection[index].distance,
-            price: this.$refs.multipleTable.selection[index].price,
+            wuliaoType: this.$refs.multipleTable.selection[index].wuliaoType,
+            transportDistance: this.$refs.multipleTable.selection[index].transportDistance,
+            unitPrice: this.$refs.multipleTable.selection[index].unitPrice,
             isFull: this.$refs.multipleTable.selection[index].isFull,
-            additionalCount: this.$refs.multipleTable.selection[index]
-              .additionalCount,
+            addcarParticular: this.$refs.multipleTable.selection[index]
+              .addcarParticular,
           })
         }
       }
