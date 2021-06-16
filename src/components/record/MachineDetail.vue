@@ -6,11 +6,11 @@
       <el-breadcrumb-item>计数展示</el-breadcrumb-item>
       <el-breadcrumb-item>机械明细表</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card
-      v-loading="loading"
-      element-loading-text="拼命加载中"
-      element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.8)">
+    <el-card>
+<!--      v-loading="loading"-->
+<!--      element-loading-text="拼命加载中"-->
+<!--      element-loading-spinner="el-icon-loading"-->
+<!--      element-loading-background="rgba(0, 0, 0, 0.8)">-->
     <span>生效时间：</span>
       <el-date-picker
         v-model="listQuery.dateRange"
@@ -65,10 +65,9 @@
       >
         查询
       </el-button>
-      <div style="height: 70%">
         <el-table
           id="table"
-          :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+          :data= list.slice((currentPage-1)*pageSize,currentPage*pageSize)
           :row-class-name="tableRowClassName"
           border
           fit
@@ -77,7 +76,7 @@
           max-height="550"
         >
           <!-- ID -->
-          <el-table-column label="序号" prop="seq"  align="center" width="70">
+          <el-table-column label="序号"  align="center" width="70">
             <template slot-scope="scope">
               <span> {{ scope.$index + (currentPage - 1) * pageSize + 1 }} </span>
             </template>
@@ -203,7 +202,6 @@
             </template>
           </el-table-column>
         </el-table>
-      </div>
       <div style="height: 10%">
         <el-pagination
           :current-page="currentPage"
@@ -229,7 +227,7 @@ export default {
       loading: true,
       currentPage: 1,
       pageSize: 10,
-      list: null,
+      list: [],
       total: 0,
       listQuery: {
         beginTime: '',// '2021-03-21 00:00:00'
@@ -245,60 +243,11 @@ export default {
       trackNo_Options: [],
       Excavator_Options: [],
       Car_Options: [],
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一天',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三天',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 3)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
-            }
-          }
-        ]
-      }
     }
   },
-  created() {
+  mounted() {
     this.getExcavatorAndCar()
-    this.getList()
+    //this.getList()
   },
   methods: {
     tableRowClassName({row}) {
@@ -317,15 +266,21 @@ export default {
       this.currentPage = val
     },
     getList(){
-        this.listQuery.beginTime = this.listQuery.dateRange[0]
-        this.listQuery.endTime = this.listQuery.dateRange[1]
+        if(this.listQuery.dateRange[0] === '') {
+          this.listQuery.beginTime = '2021-01-01 00:00:00'
+          this.listQuery.endTime = '2021-01-01 00:00:00'
+        }else {
+          this.listQuery.beginTime = this.listQuery.dateRange[0]
+          this.listQuery.endTime = this.listQuery.dateRange[1]
+        }
+
       getList(this.listQuery).then( resp =>{
         this.list = resp.data
         this.slicelist = this.list.slice(0,10)
         console.log("list===",this.slicelist)
         this.total = resp.data.length
       })
-      this.loading = false
+      //this.loading = false
     },
     getExcavatorAndCar(){
       getExcavatorAndCar().then( resp =>{
