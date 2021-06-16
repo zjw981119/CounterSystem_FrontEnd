@@ -25,15 +25,23 @@
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item index="/macrecord">
+
+            <el-menu-item index="/carrecord">
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-data-analysis"></i>
                 <!-- 文本 -->
-                <span>机械统计表内部</span>
+                <span>车辆统计表</span>
               </template>
             </el-menu-item>
-
+            <el-menu-item index="/carfuel">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-data-analysis"></i>
+                <!-- 文本 -->
+                <span>车辆油量表</span>
+              </template>
+            </el-menu-item>
             <el-menu-item index="/diggerproduction">
               <template slot="title">
                 <!-- 图标 -->
@@ -42,7 +50,7 @@
                 <span>挖机生产情况表</span>
               </template>
             </el-menu-item>
-            
+
             <el-menu-item index="/diggerfuel">
               <template slot="title">
                 <!-- 图标 -->
@@ -52,14 +60,7 @@
               </template>
             </el-menu-item>
 
-            <el-menu-item index="/carfuel">
-              <template slot="title">
-                <!-- 图标 -->
-                <i class="el-icon-data-analysis"></i>
-                <!-- 文本 -->
-                <span>车辆油量表</span>
-              </template>
-            </el-menu-item>
+
 
             <el-menu-item index="/auxfuelrecord">
               <template slot="title">
@@ -70,12 +71,13 @@
               </template>
             </el-menu-item>
 
-            <el-menu-item index="/carrecord">
+
+            <el-menu-item index="/macrecord">
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-data-analysis"></i>
                 <!-- 文本 -->
-                <span>车辆统计表</span>
+                <span>机械统计表内部</span>
               </template>
             </el-menu-item>
             <el-menu-item index="/marecord">
