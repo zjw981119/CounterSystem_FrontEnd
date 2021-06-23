@@ -27,7 +27,7 @@
         </el-col>
       </el-row>
       <!-- 配置列表区域 class="rule-input" -->
-      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="520">
+      <el-table :data="configlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="740">
         <el-table-column type="index" label="#" fixed="left"></el-table-column>
         <el-table-column label="辅助车号" prop="carId">
           <template slot-scope="scope">
@@ -94,8 +94,8 @@ export default {
       month: date.getMonth() + 1,
       day: date.getDate(),
     }
-    const newmonth = nowdate.month > 10 ? nowdate.month : '0' + nowdate.month
-    const newday = nowdate.day > 10 ? nowdate.day : '0' + nowdate.day
+    const newmonth = nowdate.month > 9 ? nowdate.month : '0' + nowdate.month
+    const newday = nowdate.day > 9 ? nowdate.day : '0' + nowdate.day
     this.timevalue = nowdate.year + '-' + newmonth + '-' + newday
     //console.log(this.timevalue)
     this.getAuxMacConfig()

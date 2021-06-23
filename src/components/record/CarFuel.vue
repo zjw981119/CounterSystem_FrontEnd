@@ -17,12 +17,12 @@
         </el-col>
         <!-- 查询按钮 -->
         <el-col :span="4">
-          <el-button icon="el-icon-search" type="primary">查询</el-button>
+          <el-button icon="el-icon-search" type="primary" @click="getCarConfig">查询</el-button>
         </el-col>
       </el-row>
 
       <!-- 配置列表区域 -->
-      <el-table :data="carfuelList" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="480">
+      <el-table :data="carfuelList" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="740">
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="车号" prop="carNum"></el-table-column>
         <el-table-column label="车型" prop="carType"></el-table-column>
@@ -112,8 +112,8 @@ export default {
       month: date.getMonth() + 1,
       day: date.getDate(),
     }
-    const newmonth = nowdate.month > 10 ? nowdate.month : '0' + nowdate.month
-    const newday = nowdate.day > 10 ? nowdate.day : '0' + nowdate.day
+    const newmonth = nowdate.month > 9 ? nowdate.month : '0' + nowdate.month
+    const newday = nowdate.day > 9 ? nowdate.day : '0' + nowdate.day
     this.timevalue = nowdate.year + '-' + newmonth + '-' + newday
     //console.log(this.timevalue)
     this.getCarConfig()
@@ -122,7 +122,7 @@ export default {
   methods: {
     //获取配置信息请求
     async getCarConfig() {
-      this.carConfiglist = new Array()
+      this.carfuelList = new Array()
       var that = this
       const { data: res } = await this.$http.get(
         this.baseURL + 'Carconfig/getConfig',

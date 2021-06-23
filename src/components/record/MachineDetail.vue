@@ -7,73 +7,76 @@
       <el-breadcrumb-item>机械明细表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
-      <span>生效时间：</span>
+<!--      v-loading="loading"-->
+<!--      element-loading-text="拼命加载中"-->
+<!--      element-loading-spinner="el-icon-loading"-->
+<!--      element-loading-background="rgba(0, 0, 0, 0.8)">-->
+    <span>生效时间：</span>
       <el-date-picker
-          v-model="listQuery.dateRange"
-          type="datetimerange"
-          style="margin-left: 10px"
-          align="right"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :picker-options="pickerOptions"
-          value-format="yyyy-MM-dd HH:mm:ss"
+        v-model="listQuery.dateRange"
+        type="datetimerange"
+        style="margin-left: 10px"
+        align="right"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        :picker-options="pickerOptions"
+        value-format="yyyy-MM-dd HH:mm:ss"
       >
       </el-date-picker>
       <span> 车辆类型：</span>
       <el-select
-          v-model="listQuery.carType"
-          placeholder="请选择"
-          style="width: 200px"
-          class="filter-item"
-          clearable
-          @change='selectCarType'
+        v-model="listQuery.carType"
+        placeholder="请选择"
+        style="width: 200px"
+        class="filter-item"
+        clearable
+        @change='selectCarType'
       >
         <el-option
-            v-for="item in carType_Options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+          v-for="item in carType_Options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
         />
       </el-select>
       <span> 车号：</span>
       <el-select
-          v-model="listQuery.trackNo"
-          placeholder="请选择"
-          style="width: 200px"
-          class="filter-item"
-          clearable
+        v-model="listQuery.trackNo"
+        placeholder="请选择"
+        style="width: 200px"
+        class="filter-item"
+        clearable
       >
         <el-option
-            v-for="item in trackNo_Options"
-            :key="item"
-            :label="item"
-            :value="item"
+          v-for="item in trackNo_Options"
+          :key="item"
+          :label="item"
+          :value="item"
         />
       </el-select>
       <el-button
 
-          class="filter-item"
-          style="margin-left: 10px"
-          type="primary"
-          icon="el-icon-search"
-          @click="handleFilter"
+        class="filter-item"
+        style="margin-left: 10px"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleFilter"
       >
         查询
       </el-button>
-      <div style="height: 70%">
         <el-table
-            id="table"
-            :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            :row-class-name="tableRowClassName">
+          id="table"
+          :data= list.slice((currentPage-1)*pageSize,currentPage*pageSize)
+          :row-class-name="tableRowClassName"
           border
           fit
           highlight-current-row
           style="width: 100%"
           max-height="550"
-          >
+        >
           <!-- ID -->
-          <el-table-column label="序号" prop="seq"  align="center" width="70">
+          <el-table-column label="序号"  align="center" width="70">
             <template slot-scope="scope">
               <span> {{ scope.$index + (currentPage - 1) * pageSize + 1 }} </span>
             </template>
@@ -199,16 +202,15 @@
             </template>
           </el-table-column>
         </el-table>
-      </div>
       <div style="height: 10%">
         <el-pagination
-            :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         />
       </div>
     </el-card>
@@ -222,9 +224,10 @@ export default {
   name: 'MachineDetail',
   data() {
     return {
+      loading: true,
       currentPage: 1,
       pageSize: 10,
-      list: null,
+      list: [],
       total: 0,
       listQuery: {
         beginTime: '',// '2021-03-21 00:00:00'
@@ -240,60 +243,11 @@ export default {
       trackNo_Options: [],
       Excavator_Options: [],
       Car_Options: [],
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一天',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三天',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 3)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
-            }
-          }
-        ]
-      }
     }
   },
-  created() {
+  mounted() {
     this.getExcavatorAndCar()
-    this.getList()
+    //this.getList()
   },
   methods: {
     tableRowClassName({row}) {
@@ -312,14 +266,21 @@ export default {
       this.currentPage = val
     },
     getList(){
-      this.listQuery.beginTime = this.listQuery.dateRange[0]
-      this.listQuery.endTime = this.listQuery.dateRange[1]
+        if(this.listQuery.dateRange[0] === '') {
+          this.listQuery.beginTime = '2021-01-01 00:00:00'
+          this.listQuery.endTime = '2021-01-01 00:00:00'
+        }else {
+          this.listQuery.beginTime = this.listQuery.dateRange[0]
+          this.listQuery.endTime = this.listQuery.dateRange[1]
+        }
+
       getList(this.listQuery).then( resp =>{
         this.list = resp.data
         this.slicelist = this.list.slice(0,10)
         console.log("list===",this.slicelist)
         this.total = resp.data.length
       })
+      //this.loading = false
     },
     getExcavatorAndCar(){
       getExcavatorAndCar().then( resp =>{
@@ -337,7 +298,7 @@ export default {
       }
     },
     handleFilter() {
-      this.getList()
+        this.getList()
     }
   }
 }
