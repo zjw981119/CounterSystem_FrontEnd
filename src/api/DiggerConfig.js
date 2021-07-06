@@ -23,9 +23,10 @@ export function editDiggerConfig(data){
   })
 }
 
-export function latestDiggerConfig(){
+export function latestDiggerConfig(date){
   return request({
     url: './diggerConfig/latestDiggerConfigData',
     method: 'post',
+    data:date
   })
 }

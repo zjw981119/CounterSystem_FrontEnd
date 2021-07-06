@@ -10,7 +10,7 @@
       <el-row :gutter="12">
         <!-- 日期时间选择器 -->
         <el-col :span="3">
-          <el-date-picker v-model="dateValue" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd">
+          <el-date-picker v-model="dateValue" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" @change="getDiggerConfigList">
           </el-date-picker>
         </el-col>
         <el-col :span="3">
@@ -262,8 +262,9 @@ export default {
   methods:{
     //条件查询挖机配置表
     getDiggerConfigList() {
-      latestDiggerConfig().then(resp => {
+      latestDiggerConfig(this.$qs.stringify({date:parseTime(this.dateValue,"{y}-{m}-{d}")})).then(resp => {
         this.diggerConfigList=resp.data
+        this.optionDiggers=[]
         for (let i = 0; i < resp.data.length; i++) {
           this.optionDiggers.push(resp.data[i].carId)
         }
