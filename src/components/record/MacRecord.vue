@@ -147,7 +147,7 @@ export default {
       }
     },
     search1() {
-      axios.post('http://localhost:8083/Server/warn/findAll',
+      axios.post('http://222.74.94.190:8093/Server/warn/findAll',
           {
 
             value1: this.value == null ? null : this.value[0],
