@@ -48,7 +48,8 @@
       </el-row>
 
       <!-- 展示工作记录区域 recordlist-->
-      <el-table ref="multipleTable" :data="recordlist" border stripe :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="700" style="width: 100%">
+      <el-table ref="multipleTable" :data="recordlist" border stripe 
+      :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}" height="700" style="width: 100%">
         <el-table-column type="selection" width="55" fixed="left"></el-table-column>
         <el-table-column type="index" label="#" fixed="left"></el-table-column>
         <el-table-column label="计数宝编号" prop="address" width="120px"></el-table-column>
